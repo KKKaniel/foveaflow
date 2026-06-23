@@ -7,6 +7,7 @@ import type {
   CalibrationField,
   TrainerSliderValue,
 } from "$lib/trainer/settings";
+import type { TrainingRecommendation } from "$lib/vision/prescription";
 
 type SliderBinding = {
   value: () => number[];
@@ -54,6 +55,8 @@ export type TrainerDialogActions = {
   toggleMotionPaused: () => void;
   toggleMotionDirection: () => void;
   resetSettings: () => void;
+  /** 应用视力匹配推荐参数 */
+  applyRecommendation: (rec: TrainingRecommendation) => void;
 };
 
 export type TrainerDialogState = {

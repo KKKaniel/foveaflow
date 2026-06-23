@@ -1,29 +1,25 @@
 <script lang="ts">
-  import type { Snippet } from "svelte";
   import EyeIcon from "@lucide/svelte/icons/eye";
   import RefreshCwIcon from "@lucide/svelte/icons/refresh-cw";
   import XIcon from "@lucide/svelte/icons/x";
+  import type { Snippet } from "svelte";
 
-  import TrainerDrillControls from "$lib/components/trainer/TrainerDrillControls.svelte";
-  import TrainerDisplayControls from "$lib/components/trainer/TrainerDisplayControls.svelte";
   import TrainerCalibrationControls from "$lib/components/trainer/TrainerCalibrationControls.svelte";
+  import TrainerDisplayControls from "$lib/components/trainer/TrainerDisplayControls.svelte";
+  import TrainerDrillControls from "$lib/components/trainer/TrainerDrillControls.svelte";
   import VisionSetupDialog from "$lib/components/VisionSetupDialog.svelte";
   import { Button } from "$lib/components/ui/button/index.js";
   import * as Field from "$lib/components/ui/field/index.js";
-  import { Label } from "$lib/components/ui/label/index.js";
   import { Slider } from "$lib/components/ui/slider/index.js";
   import * as Tabs from "$lib/components/ui/tabs/index.js";
   import { exercisePresets, type TrainerSettings } from "$lib/engine/presets";
+  import type { TrainerDialogActions } from "$lib/trainer/control-actions";
   import type { BehaviorId } from "$lib/trainer/behavior";
   import {
-    getBehaviorName,
     maxSpeedByUnit,
     speedStepByUnit,
   } from "$lib/trainer/options";
-  import {
-    trainerSettingBounds,
-    type TrainerSliderValue,
-  } from "$lib/trainer/settings";
+  import { trainerSettingBounds } from "$lib/trainer/settings";
   import type { TrainingRecommendation } from "$lib/vision/prescription";
 
   type Props = {
@@ -32,33 +28,7 @@
     isLilacChaserMode: boolean;
     behaviorValue: BehaviorId;
     patternSelectContentClass: string;
-    handlePresetChange: (value: string) => void;
-    handlePatternChange: (value: string) => void;
-    handleBehaviorChange: (value: string) => void;
-    handleLilacChaserColorChange: (value: string) => void;
-    lilacChaserScaleSliderValue: () => number[];
-    setLilacChaserScaleSliderValue: (value: TrainerSliderValue) => void;
-    onOpenChange: (open: boolean) => void;
-    onReset: () => void;
-    onApplyRecommendation: (rec: TrainingRecommendation) => void;
-    sizeSlider: { value: () => number[]; set: (v: TrainerSliderValue) => void };
-    speedSlider: { value: () => number[]; set: (v: TrainerSliderValue) => void };
-    distractorCountSlider: {
-      value: () => number[];
-      set: (v: TrainerSliderValue) => void;
-    };
-    distractorBrightnessSlider: {
-      value: () => number[];
-      set: (v: TrainerSliderValue) => void;
-    };
-    targetOpacitySlider: {
-      value: () => number[];
-      set: (v: TrainerSliderValue) => void;
-    };
-    letterScaleSlider: {
-      value: () => number[];
-      set: (v: TrainerSliderValue) => void;
-    };
+    actions: TrainerDialogActions;
     sliderRow: Snippet<[string, string]>;
   };
 
@@ -68,28 +38,14 @@
     isLilacChaserMode,
     behaviorValue,
     patternSelectContentClass,
-    handlePresetChange,
-    handlePatternChange,
-    handleBehaviorChange,
-    handleLilacChaserColorChange,
-    lilacChaserScaleSliderValue,
-    setLilacChaserScaleSliderValue,
-    onOpenChange,
-    onReset,
-    onApplyRecommendation,
-    sizeSlider,
-    speedSlider,
-    distractorCountSlider,
-    distractorBrightnessSlider,
-    targetOpacitySlider,
-    letterScaleSlider,
+    actions,
     sliderRow,
   }: Props = $props();
 
   let visionDialogOpen = $state(false);
 
   const handleApplyRecommendation = (rec: TrainingRecommendation) => {
-    onApplyRecommendation(rec);
+    actions.applyRecommendation(rec);
     visionDialogOpen = false;
   };
 </script>
@@ -99,7 +55,10 @@
   popover="auto"
   class="trainer-controls-panel w-[22rem] rounded-2xl border bg-popover text-popover-foreground shadow-lg outline-none backdrop-blur-none"
   onbeforetoggle={(e) => {
-    if (e instanceof ToggleEvent) onOpenChange(e.newState === "open");
+    if (e instanceof ToggleEvent) {
+      const isOpen = e.newState === "open";
+      if (isOpen !== open) open = isOpen;
+    }
   }}
 >
   <div class="flex items-center justify-between border-b px-4 py-3">
@@ -122,7 +81,7 @@
         size="icon"
         class="size-8"
         aria-label="重置所有设置"
-        onclick={onReset}
+        onclick={actions.resetSettings}
       >
         <RefreshCwIcon class="size-4" />
       </Button>
@@ -156,12 +115,12 @@
           {isLilacChaserMode}
           {behaviorValue}
           {patternSelectContentClass}
-          {handlePresetChange}
-          {handlePatternChange}
-          {handleBehaviorChange}
-          {handleLilacChaserColorChange}
-          {lilacChaserScaleSliderValue}
-          {setLilacChaserScaleSliderValue}
+          handlePresetChange={actions.handlePresetChange}
+          handlePatternChange={actions.handlePatternChange}
+          handleBehaviorChange={actions.handleBehaviorChange}
+          handleLilacChaserColorChange={actions.handleLilacChaserColorChange}
+          lilacChaserScaleSliderValue={actions.lilacChaserScaleSlider.value}
+          setLilacChaserScaleSliderValue={actions.lilacChaserScaleSlider.set}
           {sliderRow}
         />
 
@@ -169,7 +128,7 @@
           <Field.Field>
             {@render sliderRow("大小", `${Math.round(settings.baseRadiusPx)} px`)}
             <Slider
-              bind:value={sizeSlider.value, sizeSlider.set}
+              bind:value={actions.sizeSlider.value, actions.sizeSlider.set}
               min={trainerSettingBounds.baseRadiusPx.min}
               max={trainerSettingBounds.baseRadiusPx.max}
               step={1}
@@ -179,7 +138,7 @@
           <Field.Field>
             {@render sliderRow("速度", `${settings.speed.value.toFixed(1)} ${settings.speed.unit}`)}
             <Slider
-              bind:value={speedSlider.value, speedSlider.set}
+              bind:value={actions.speedSlider.value, actions.speedSlider.set}
               min={trainerSettingBounds.speedValue.min}
               max={maxSpeedByUnit[settings.speed.unit]}
               step={speedStepByUnit[settings.speed.unit]}
@@ -192,7 +151,7 @@
           <Field.Field>
             {@render sliderRow("干扰物数量", `${settings.distractorCount}`)}
             <Slider
-              bind:value={distractorCountSlider.value, distractorCountSlider.set}
+              bind:value={actions.distractorCountSlider.value, actions.distractorCountSlider.set}
               min={trainerSettingBounds.distractorCount.min}
               max={trainerSettingBounds.distractorCount.max}
               step={1}
@@ -213,9 +172,9 @@
         <TrainerDisplayControls
           {settings}
           {isLilacChaserMode}
-          {distractorBrightnessSlider}
-          {targetOpacitySlider}
-          {letterScaleSlider}
+          distractorBrightnessSlider={actions.distractorBrightnessSlider}
+          targetOpacitySlider={actions.opacitySlider}
+          letterScaleSlider={actions.letterScaleSlider}
           {sliderRow}
         />
       </Tabs.Content>

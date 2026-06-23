@@ -113,6 +113,7 @@
     type CanvasTheme,
   } from "$lib/trainer/rendering";
   import { createHudControlTransition } from "$lib/trainer/transitions";
+  import type { TrainingRecommendation } from "$lib/vision/prescription";
 
   let { routeSlug = "" }: { routeSlug?: string } = $props();
 
@@ -699,6 +700,16 @@
     syncBrowserPath();
   };
 
+  /**
+   * 应用视力匹配推荐：直接写入 baseRadiusPx 和 speed，并重刷画布。
+   */
+  const applyRecommendation = (rec: TrainingRecommendation) => {
+    settings.baseRadiusPx = rec.baseRadiusPx;
+    settings.speed = { value: rec.speedValue, unit: rec.speedUnit };
+    refreshBaseSpeed();
+    drawFrame({ clearTrail: true });
+  };
+
   const handleGuidePopoverToggle = (event: ToggleEvent) => {
     guidePopoverOpen = event.newState === "open";
     if (guidePopoverOpen) revealHud();
@@ -1006,6 +1017,7 @@
     toggleMotionPaused,
     toggleMotionDirection,
     resetSettings,
+    applyRecommendation,   // ← 新增：视力匹配连线
   };
 
   $effect(() => {
