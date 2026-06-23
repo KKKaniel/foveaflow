@@ -25,7 +25,6 @@
   } from "$lib/trainer/options";
   import { trainerSettingBounds } from "$lib/trainer/settings";
   import type { TrainerHudActions } from "$lib/trainer/control-actions";
-  import { buildDailySession } from "$lib/vision/prescription";
 
   type Props = {
     attachHudShell: Attachment<HTMLDivElement>;
@@ -243,7 +242,7 @@
 
         <!-- 视力匹配按钮 + Popover（直嵌顶栏） -->
         <VisionSetupPopover
-          onApply={actions.applyRecommendation ?? (() => {})}
+          onApply={actions.applyRecommendation}
           onStartSession={actions.startDailySession}
         />
 
