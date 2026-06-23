@@ -3,21 +3,24 @@
   import {
     computeRecommendation,
     validatePrescriptionInput,
+    buildDailySession,
     type TrainingRecommendation,
+    type SessionModule,
   } from "$lib/vision/prescription";
   import { Button } from "$lib/components/ui/button/index.js";
 
   type Props = {
     onApply: (rec: TrainingRecommendation) => void;
+    onStartSession: (modules: SessionModule[]) => void;
   };
 
-  let { onApply }: Props = $props();
+  let { onApply, onStartSession }: Props = $props();
 
   let myopiaInput = $state("");
   let astigmatismInput = $state("0");
   let error = $state("");
   let recommendation = $state<TrainingRecommendation | null>(null);
-  let applied = $state(false);
+  let sessionStarted = $state(false);
 
   const levelColors: Record<string, string> = {
     mild: "text-green-600 dark:text-green-400",
@@ -29,7 +32,7 @@
   const handleCompute = () => {
     error = "";
     recommendation = null;
-    applied = false;
+    sessionStarted = false;
     const result = validatePrescriptionInput(myopiaInput, astigmatismInput);
     if (!result.valid) {
       error = result.error;
@@ -38,10 +41,11 @@
     recommendation = computeRecommendation(result.input);
   };
 
-  const handleApply = (rec: TrainingRecommendation) => {
+  const handleStartSession = (rec: TrainingRecommendation) => {
     onApply(rec);
-    applied = true;
-    // 应用后自动关闭 popover
+    const session = buildDailySession(rec);
+    onStartSession(session.modules);
+    sessionStarted = true;
     const panel = document.getElementById("vision-setup-popover");
     if (panel instanceof HTMLElement && typeof panel.hidePopover === "function") {
       panel.hidePopover();
@@ -80,11 +84,8 @@
   </div>
 
   <div class="space-y-3">
-    <!-- 近视度数 -->
     <div>
-      <label for="hud-myopia-input" class="mb-1 block text-xs font-medium">
-        近视度数
-      </label>
+      <label for="hud-myopia-input" class="mb-1 block text-xs font-medium">近视度数</label>
       <div class="relative">
         <input
           id="hud-myopia-input"
@@ -101,11 +102,8 @@
       </div>
     </div>
 
-    <!-- 散光度数 -->
     <div>
-      <label for="hud-astigmatism-input" class="mb-1 block text-xs font-medium">
-        散光度数
-      </label>
+      <label for="hud-astigmatism-input" class="mb-1 block text-xs font-medium">散光度数</label>
       <div class="relative">
         <input
           id="hud-astigmatism-input"
@@ -131,6 +129,7 @@
     {#if recommendation}
       {@const rec = recommendation}
       {@const colorClass = levelColors[rec.level] ?? ""}
+      {@const session = buildDailySession(rec)}
       <div class="rounded-xl border bg-muted/40 p-3 space-y-2">
         <div class="flex items-center justify-between">
           <span class="text-xs font-semibold">匹配结果</span>
@@ -148,23 +147,34 @@
           </div>
         </div>
 
+        <!-- 训练计划预览 -->
         <div class="rounded-lg border bg-background px-3 py-2 space-y-1">
+          <div class="flex justify-between text-xs">
+            <span class="text-muted-foreground">每日模块</span>
+            <span class="font-semibold">{session.totalModules} 组 × 2 分钟</span>
+          </div>
           <div class="flex justify-between text-xs">
             <span class="text-muted-foreground">建议周期</span>
             <span class="font-semibold">{rec.durationWeeks} 周</span>
           </div>
-          <div class="flex justify-between text-xs">
-            <span class="text-muted-foreground">每日时长</span>
-            <span class="font-semibold">{rec.dailyMinutes} 分钟</span>
-          </div>
         </div>
 
-        {#if applied}
+        <!-- 模块列表预览 -->
+        <div class="space-y-1">
+          {#each session.modules as mod (mod.index)}
+            <div class="flex items-center justify-between rounded bg-muted/50 px-2 py-1">
+              <span class="text-xs">{mod.label} · {mod.focusLabel}</span>
+              <span class="text-xs text-muted-foreground tabular-nums">{mod.speedValue} deg/s</span>
+            </div>
+          {/each}
+        </div>
+
+        {#if sessionStarted}
           <div class="flex items-center gap-1.5 rounded-lg bg-accent/20 px-3 py-1.5">
-            <span class="text-xs font-medium text-accent-foreground">✓ 设置已应用</span>
+            <span class="text-xs font-medium text-accent-foreground">✓ 训练已开始</span>
           </div>
         {:else}
-          <Button onclick={() => handleApply(rec)} size="sm" class="w-full">应用到训练器</Button>
+          <Button onclick={() => handleStartSession(rec)} size="sm" class="w-full">开始今日训练</Button>
         {/if}
       </div>
     {/if}
