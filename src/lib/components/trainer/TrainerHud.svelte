@@ -9,6 +9,7 @@
   import ModePathPreview from "$lib/components/ModePathPreview.svelte";
   import PatternPathPreview from "$lib/components/PatternPathPreview.svelte";
   import TrainerPatternSelectGroups from "$lib/components/trainer/TrainerPatternSelectGroups.svelte";
+  import VisionSetupPopover from "$lib/components/trainer/VisionSetupPopover.svelte";
   import { Button } from "$lib/components/ui/button/index.js";
   import * as Select from "$lib/components/ui/select/index.js";
   import { Slider } from "$lib/components/ui/slider/index.js";
@@ -420,6 +421,9 @@
         >
           <ArrowLeftRightIcon />
         </Button>
+
+        <!-- 视力匹配按鈕 + Popover（直嵌顶栏） -->
+        <VisionSetupPopover onApply={actions.applyRecommendation} />
 
         <Button
           class="pressable-ui"
