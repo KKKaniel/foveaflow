@@ -1,249 +1,236 @@
 <script lang="ts">
-  import RotateCcwIcon from "@lucide/svelte/icons/rotate-ccw";
+  import type { Snippet } from "svelte";
+  import EyeIcon from "@lucide/svelte/icons/eye";
+  import RefreshCwIcon from "@lucide/svelte/icons/refresh-cw";
+  import XIcon from "@lucide/svelte/icons/x";
 
-  import TrainerControlSectionIcon from "$lib/components/trainer/TrainerControlSectionIcon.svelte";
   import TrainerDrillControls from "$lib/components/trainer/TrainerDrillControls.svelte";
-  import TrainerMotionControls from "$lib/components/trainer/TrainerMotionControls.svelte";
-  import TrainerScreenControls from "$lib/components/trainer/TrainerScreenControls.svelte";
-  import TrainerSessionControls from "$lib/components/trainer/TrainerSessionControls.svelte";
-  import TrainerSettingsSection from "$lib/components/trainer/TrainerSettingsSection.svelte";
-  import TrainerTargetControls from "$lib/components/trainer/TrainerTargetControls.svelte";
+  import TrainerDisplayControls from "$lib/components/trainer/TrainerDisplayControls.svelte";
+  import TrainerCalibrationControls from "$lib/components/trainer/TrainerCalibrationControls.svelte";
+  import VisionSetupDialog from "$lib/components/VisionSetupDialog.svelte";
   import { Button } from "$lib/components/ui/button/index.js";
-  import * as Dialog from "$lib/components/ui/dialog/index.js";
-  import * as Sidebar from "$lib/components/ui/sidebar/index.js";
+  import * as Field from "$lib/components/ui/field/index.js";
+  import { Label } from "$lib/components/ui/label/index.js";
+  import { Slider } from "$lib/components/ui/slider/index.js";
   import * as Tabs from "$lib/components/ui/tabs/index.js";
-  import type { TrainerSettings } from "$lib/engine/presets";
+  import { exercisePresets, type TrainerSettings } from "$lib/engine/presets";
   import type { BehaviorId } from "$lib/trainer/behavior";
-  import type { ControlSection, ControlSectionId } from "$lib/trainer/options";
-  import type { TrainerDialogActions } from "$lib/trainer/control-actions";
+  import {
+    getBehaviorName,
+    maxSpeedByUnit,
+    speedStepByUnit,
+  } from "$lib/trainer/options";
+  import {
+    trainerSettingBounds,
+    type TrainerSliderValue,
+  } from "$lib/trainer/settings";
+  import type { TrainingRecommendation } from "$lib/vision/prescription";
 
-  let {
-    open = $bindable(false),
-    settings = $bindable(),
-    availableControlSections,
-    currentControlSection,
-    currentControlSectionLabel,
-    motionPaused,
-    motionDirectionLabel,
-    canToggleDirection,
-    colorMode,
-    isDarkMode,
-    isMotMode,
-    isLilacChaserMode,
-    behaviorValue,
-    patternSelectContentClass,
-    actions,
-  }: {
+  type Props = {
     open: boolean;
     settings: TrainerSettings;
-    availableControlSections: readonly ControlSection[];
-    currentControlSection: ControlSectionId;
-    currentControlSectionLabel: string;
-    motionPaused: boolean;
-    motionDirectionLabel: string;
-    canToggleDirection: boolean;
-    colorMode: "light" | "dark";
-    isDarkMode: boolean;
-    isMotMode: boolean;
     isLilacChaserMode: boolean;
     behaviorValue: BehaviorId;
     patternSelectContentClass: string;
-    actions: TrainerDialogActions;
-  } = $props();
+    handlePresetChange: (value: string) => void;
+    handlePatternChange: (value: string) => void;
+    handleBehaviorChange: (value: string) => void;
+    handleLilacChaserColorChange: (value: string) => void;
+    lilacChaserScaleSliderValue: () => number[];
+    setLilacChaserScaleSliderValue: (value: TrainerSliderValue) => void;
+    onOpenChange: (open: boolean) => void;
+    onReset: () => void;
+    onApplyRecommendation: (rec: TrainingRecommendation) => void;
+    sizeSlider: { value: () => number[]; set: (v: TrainerSliderValue) => void };
+    speedSlider: { value: () => number[]; set: (v: TrainerSliderValue) => void };
+    distractorCountSlider: {
+      value: () => number[];
+      set: (v: TrainerSliderValue) => void;
+    };
+    distractorBrightnessSlider: {
+      value: () => number[];
+      set: (v: TrainerSliderValue) => void;
+    };
+    targetOpacitySlider: {
+      value: () => number[];
+      set: (v: TrainerSliderValue) => void;
+    };
+    letterScaleSlider: {
+      value: () => number[];
+      set: (v: TrainerSliderValue) => void;
+    };
+    sliderRow: Snippet<[string, string]>;
+  };
 
-  const handleControlSectionValueChange = (sectionId: string) => {
-    if (availableControlSections.some((section) => section.id === sectionId)) {
-      actions.onControlSectionChange(sectionId as ControlSectionId);
-    }
+  let {
+    open,
+    settings,
+    isLilacChaserMode,
+    behaviorValue,
+    patternSelectContentClass,
+    handlePresetChange,
+    handlePatternChange,
+    handleBehaviorChange,
+    handleLilacChaserColorChange,
+    lilacChaserScaleSliderValue,
+    setLilacChaserScaleSliderValue,
+    onOpenChange,
+    onReset,
+    onApplyRecommendation,
+    sizeSlider,
+    speedSlider,
+    distractorCountSlider,
+    distractorBrightnessSlider,
+    targetOpacitySlider,
+    letterScaleSlider,
+    sliderRow,
+  }: Props = $props();
+
+  let visionDialogOpen = $state(false);
+
+  const handleApplyRecommendation = (rec: TrainingRecommendation) => {
+    onApplyRecommendation(rec);
+    visionDialogOpen = false;
   };
 </script>
 
-{#snippet sliderRow(label: string, valueLabel: string)}
-  <span
-    class="flex items-center justify-between gap-4 text-xs text-muted-foreground"
-  >
-    {label}
-    <strong class="font-semibold tabular-nums text-foreground">
-      {valueLabel}
-    </strong>
-  </span>
-{/snippet}
-
-<Dialog.Root bind:open>
-  <Dialog.Content
-    class="h-[calc(100dvh-1rem)] max-h-none max-w-[calc(100dvw-1rem)] overflow-hidden p-0 md:h-auto md:max-h-125 md:max-w-175 lg:max-w-200"
-    trapFocus={false}
-  >
-    <Dialog.Title class="sr-only">设置</Dialog.Title>
-    <Dialog.Description class="sr-only">
-      修改你的视流训练设置。
-    </Dialog.Description>
-    <Sidebar.Provider
-      class="h-full min-h-0 min-w-0 items-start overflow-hidden"
-    >
-      <Sidebar.Root collapsible="none" class="hidden md:flex">
-        <Sidebar.Content>
-          <Sidebar.Group>
-            <Sidebar.GroupContent>
-              <Sidebar.Menu>
-                {#each availableControlSections as section (section.id)}
-                  <Sidebar.MenuItem>
-                    <Sidebar.MenuButton
-                      isActive={currentControlSection === section.id}
-                      onclick={() => actions.onControlSectionChange(section.id)}
-                    >
-                      <TrainerControlSectionIcon
-                        icon={section.icon}
-                        {colorMode}
-                      />
-                      <span>{section.label}</span>
-                    </Sidebar.MenuButton>
-                  </Sidebar.MenuItem>
-                {/each}
-              </Sidebar.Menu>
-            </Sidebar.GroupContent>
-          </Sidebar.Group>
-        </Sidebar.Content>
-      </Sidebar.Root>
-
-      <Tabs.Root
-        value={currentControlSection}
-        onValueChange={handleControlSectionValueChange}
-        class="flex h-full min-h-0 min-w-0 flex-1 flex-col gap-0 overflow-hidden md:h-120"
+<div
+  id="trainer-controls-panel"
+  popover="auto"
+  class="trainer-controls-panel w-[22rem] rounded-2xl border bg-popover text-popover-foreground shadow-lg outline-none backdrop-blur-none"
+  onbeforetoggle={(e) => {
+    if (e instanceof ToggleEvent) onOpenChange(e.newState === "open");
+  }}
+>
+  <div class="flex items-center justify-between border-b px-4 py-3">
+    <h2 class="text-sm font-semibold">设置</h2>
+    <div class="flex items-center gap-1">
+      <!-- 视力匹配按钮 -->
+      <Button
+        variant="ghost"
+        size="icon"
+        class="size-8"
+        aria-label="视力匹配训练"
+        title="根据近视/散光度数自动匹配训练参数"
+        onclick={() => (visionDialogOpen = true)}
       >
-        <header
-          class="flex h-16 shrink-0 items-center gap-2 px-4 pr-16 transition-[width,height] ease-linear md:px-4 md:pr-4 group-has-data-[collapsible=icon]/sidebar-wrapper:h-12"
-        >
-          <div class="flex min-w-0 items-center gap-2 text-base">
-            <span class="shrink-0 text-muted-foreground"> 设置 </span>
-            <span class="shrink-0 text-muted-foreground" aria-hidden="true">
-              ›
-            </span>
-            <h2 class="truncate font-medium">
-              {currentControlSectionLabel}
-            </h2>
-          </div>
-        </header>
+        <EyeIcon class="size-4" />
+      </Button>
+      <!-- 重置按钮 -->
+      <Button
+        variant="ghost"
+        size="icon"
+        class="size-8"
+        aria-label="重置所有设置"
+        onclick={onReset}
+      >
+        <RefreshCwIcon class="size-4" />
+      </Button>
+      <!-- 关闭按钮 -->
+      <Button
+        popovertarget="trainer-controls-panel"
+        variant="ghost"
+        size="icon"
+        class="size-8"
+        aria-label="关闭设置面板"
+      >
+        <XIcon class="size-4" />
+      </Button>
+    </div>
+  </div>
 
-        <nav class="px-3 py-2 md:hidden" aria-label="Control sections">
-          <Tabs.List class="no-scrollbar w-full justify-start overflow-x-auto">
-            {#each availableControlSections as section (section.id)}
-              <Tabs.Trigger
-                value={section.id}
-                class="pressable-ui shrink-0 grow-0 basis-auto"
-              >
-                <TrainerControlSectionIcon icon={section.icon} {colorMode} />
-                <span>{section.label}</span>
-              </Tabs.Trigger>
-            {/each}
-          </Tabs.List>
-        </nav>
+  <div class="overflow-y-auto" style="max-height: calc(100dvh - 8rem)">
+    <Tabs.Root value="drill">
+      <div class="sticky top-0 z-10 bg-popover px-4 pt-3">
+        <Tabs.List class="w-full">
+          <Tabs.Trigger value="drill" class="flex-1">训练</Tabs.Trigger>
+          <Tabs.Trigger value="display" class="flex-1">显示</Tabs.Trigger>
+          <Tabs.Trigger value="calibration" class="flex-1">校准</Tabs.Trigger>
+        </Tabs.List>
+      </div>
 
-        <div
-          class="flex min-h-0 min-w-0 flex-1 flex-col gap-4 overflow-y-auto p-3 md:p-4 md:pt-0"
-        >
-          <div
-            class="t-resize w-full max-w-3xl rounded-3xl border border-border/60 bg-muted/55 p-4 shadow-[0_18px_50px_-42px_rgba(0,0,0,0.85)] md:rounded-xl md:border-0 md:bg-muted/50 md:shadow-none"
-          >
-            {#if currentControlSection === "session"}
-              <TrainerSettingsSection icon="theme" label="训练会话" {colorMode}>
-                <TrainerSessionControls
-                  {settings}
-                  {motionPaused}
-                  {motionDirectionLabel}
-                  {canToggleDirection}
-                  {isDarkMode}
-                  toggleMotionPaused={actions.toggleMotionPaused}
-                  toggleMotionDirection={actions.toggleMotionDirection}
-                  handleThemeCheckedChange={actions.handleThemeCheckedChange}
-                />
-              </TrainerSettingsSection>
-            {:else if currentControlSection === "drill"}
-              <TrainerSettingsSection icon="target" label="训练模式" {colorMode}>
-                <TrainerDrillControls
-                  {settings}
-                  {isLilacChaserMode}
-                  {behaviorValue}
-                  {patternSelectContentClass}
-                  handlePresetChange={actions.handlePresetChange}
-                  handlePatternChange={actions.handlePatternChange}
-                  handleBehaviorChange={actions.handleBehaviorChange}
-                  handleLilacChaserColorChange={actions.handleLilacChaserColorChange}
-                  lilacChaserScaleSliderValue={actions.lilacChaserScaleSlider
-                    .value}
-                  setLilacChaserScaleSliderValue={actions.lilacChaserScaleSlider
-                    .set}
-                  {sliderRow}
-                />
-              </TrainerSettingsSection>
-            {:else if currentControlSection === "targets"}
-              <TrainerSettingsSection icon="eye" label="目标设置" {colorMode}>
-                <TrainerTargetControls
-                  bind:settings
-                  {isMotMode}
-                  handleColorInput={actions.handleColorInput}
-                  handleShapeChange={actions.handleShapeChange}
-                  handleLetterColorInput={actions.handleLetterColorInput}
-                  handleLetterWeightChange={actions.handleLetterWeightChange}
-                  sizeSliderValue={actions.sizeSlider.value}
-                  setSizeSliderValue={actions.sizeSlider.set}
-                  opacitySliderValue={actions.opacitySlider.value}
-                  setOpacitySliderValue={actions.opacitySlider.set}
-                  targetCountSliderValue={actions.targetCountSlider.value}
-                  setTargetCountSliderValue={actions.targetCountSlider.set}
-                  distractorCountSliderValue={actions.distractorCountSlider
-                    .value}
-                  setDistractorCountSliderValue={actions.distractorCountSlider
-                    .set}
-                  distractorBrightnessSliderValue={actions
-                    .distractorBrightnessSlider.value}
-                  setDistractorBrightnessSliderValue={actions
-                    .distractorBrightnessSlider.set}
-                  letterScaleSliderValue={actions.letterScaleSlider.value}
-                  setLetterScaleSliderValue={actions.letterScaleSlider.set}
-                  {sliderRow}
-                />
-              </TrainerSettingsSection>
-            {:else if currentControlSection === "motion"}
-              <TrainerSettingsSection icon="motion" label="运动控制" {colorMode}>
-                <TrainerMotionControls
-                  {settings}
-                  speedSliderValue={actions.speedSlider.value}
-                  setSpeedSliderValue={actions.speedSlider.set}
-                  handleSpeedUnitChange={actions.handleSpeedUnitChange}
-                  {sliderRow}
-                />
-              </TrainerSettingsSection>
-            {:else if currentControlSection === "screen"}
-              <TrainerSettingsSection
-                icon="calibration"
-                label="屏幕校准"
-                {colorMode}
-              >
-                <TrainerScreenControls
-                  bind:settings
-                  {canToggleDirection}
-                  handleCalibrationInput={actions.handleCalibrationInput}
-                />
-              </TrainerSettingsSection>
-            {:else}
-              <TrainerSettingsSection icon="reset" label="恢复默认" {colorMode}>
-                <p class="text-sm leading-6 text-muted-foreground">
-                  将当前训练模式恢复为默认行为、视觉效果、校准和本地设置。
-                </p>
-                <Button
-                  class="pressable-ui w-full justify-start"
-                  variant="outline"
-                  onclick={actions.resetSettings}
-                >
-                  <RotateCcwIcon class="size-4" />
-                  <span class="pl-1">恢复默认设置</span>
-                </Button>
-              </TrainerSettingsSection>
-            {/if}
-          </div>
-        </div>
-      </Tabs.Root>
-    </Sidebar.Provider>
-  </Dialog.Content>
-</Dialog.Root>
+      <!-- 训练 Tab -->
+      <Tabs.Content value="drill" class="space-y-4 px-4 pb-4 pt-3">
+        <TrainerDrillControls
+          {settings}
+          {isLilacChaserMode}
+          {behaviorValue}
+          {patternSelectContentClass}
+          {handlePresetChange}
+          {handlePatternChange}
+          {handleBehaviorChange}
+          {handleLilacChaserColorChange}
+          {lilacChaserScaleSliderValue}
+          {setLilacChaserScaleSliderValue}
+          {sliderRow}
+        />
+
+        {#if !isLilacChaserMode}
+          <Field.Field>
+            {@render sliderRow("大小", `${Math.round(settings.baseRadiusPx)} px`)}
+            <Slider
+              bind:value={sizeSlider.value, sizeSlider.set}
+              min={trainerSettingBounds.baseRadiusPx.min}
+              max={trainerSettingBounds.baseRadiusPx.max}
+              step={1}
+              aria-label="目标大小"
+            />
+          </Field.Field>
+          <Field.Field>
+            {@render sliderRow("速度", `${settings.speed.value.toFixed(1)} ${settings.speed.unit}`)}
+            <Slider
+              bind:value={speedSlider.value, speedSlider.set}
+              min={trainerSettingBounds.speedValue.min}
+              max={maxSpeedByUnit[settings.speed.unit]}
+              step={speedStepByUnit[settings.speed.unit]}
+              aria-label="目标速度"
+            />
+          </Field.Field>
+        {/if}
+
+        {#if settings.presetId === "mot"}
+          <Field.Field>
+            {@render sliderRow("干扰物数量", `${settings.distractorCount}`)}
+            <Slider
+              bind:value={distractorCountSlider.value, distractorCountSlider.set}
+              min={trainerSettingBounds.distractorCount.min}
+              max={trainerSettingBounds.distractorCount.max}
+              step={1}
+              aria-label="干扰物数量"
+            />
+          </Field.Field>
+        {/if}
+
+        {#each exercisePresets.filter((p) => p.id === settings.presetId) as preset (preset.id)}
+          {#if preset.description}
+            <p class="text-xs text-muted-foreground">{preset.description}</p>
+          {/if}
+        {/each}
+      </Tabs.Content>
+
+      <!-- 显示 Tab -->
+      <Tabs.Content value="display" class="space-y-4 px-4 pb-4 pt-3">
+        <TrainerDisplayControls
+          {settings}
+          {isLilacChaserMode}
+          {distractorBrightnessSlider}
+          {targetOpacitySlider}
+          {letterScaleSlider}
+          {sliderRow}
+        />
+      </Tabs.Content>
+
+      <!-- 校准 Tab -->
+      <Tabs.Content value="calibration" class="space-y-4 px-4 pb-4 pt-3">
+        <TrainerCalibrationControls {settings} />
+      </Tabs.Content>
+    </Tabs.Root>
+  </div>
+</div>
+
+<!-- 视力匹配对话框 -->
+<VisionSetupDialog
+  open={visionDialogOpen}
+  onApply={handleApplyRecommendation}
+  onOpenChange={(o) => (visionDialogOpen = o)}
+/>
