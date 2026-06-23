@@ -2,69 +2,67 @@ import type { TrainingMode } from "../engine/presets";
 
 export const audienceNotes = [
   {
-    title: "Gamers",
-    body: "Sharpen your visual warmup before FPS games with tracking, refocus, peripheral awareness, and character movement reading drills.",
+    title: "游戏玩家",
+    body: "在 FPS 游戏前用追踪、快速对焦、周边视野感知和移动目标识别训练来热身，提升视觉表现。",
   },
   {
-    title: "IT professionals",
-    body: "Sharpen focus between code, logs, dashboards, terminals, tickets, and multi-monitor work.",
+    title: "IT 从业者",
+    body: "在代码、日志、仪表盘、终端、工单和多显示器工作之间，快速切换并保持专注。",
   },
   {
-    title: "People on screens all day",
-    body: "Give tired screen eyes a quick active break after reading, meetings, or too many tabs.",
+    title: "长时间使用屏幕的人",
+    body: "在长时间阅读、会议或多标签工作后，给疲劳的眼睛做一次短暂的主动休息。",
   },
 ] as const;
 
 export const trainingModeGuides = [
   {
     mode: "pursuit",
-    title: "Smooth Pursuit",
-    summary: "Train smooth visual tracking by following one moving target.",
+    title: "平滑追踪",
+    summary: "通过跟随一个移动目标来训练平滑的视觉追踪能力。",
     steps: [
-      "Keep your head still and let your eyes do the work.",
-      "Track the ball as smoothly as you can instead of jumping ahead of it.",
-      "Use predictable paths for steady tracking. Use random paths or hard turns when you want more target-search work.",
+      "保持头部不动，让眼睛完成所有动作。",
+      "尽可能平滑地追踪目标，而不是提前跳跃预判。",
+      "使用可预测的路径来建立稳定节奏；使用随机路径或急转弯来增加目标搜索难度。",
     ],
     benefits:
-      "Smooth Pursuit helps train steady tracking, moving-target focus, and controlled eye movement across more of your usable range. Predictable paths build rhythm and control. Random paths and hard turns add more visual search and reaction demand.",
+      "平滑追踪有助于训练稳定追踪、移动目标对焦和在更大视觉范围内的控制眼动能力。可预测路径建立节奏感和控制力；随机路径和急转弯则增加视觉搜索和反应需求。",
   },
   {
     mode: "reactionTime",
-    title: "Reaction Jumps",
-    summary:
-      "Train quick refocus by snapping your eyes to each new target position.",
+    title: "反应跳跃",
+    summary: "通过将视线快速锁定到每个新目标位置来训练快速对焦能力。",
     steps: [
-      "Keep your head still and start with your eyes on the ball.",
-      "When it jumps, find the new location and actually focus on it before the next jump.",
-      "Use slower speeds for clean refocusing. Raise the speed when you want a sharper reaction drill.",
+      "保持头部不动，视线从目标开始。",
+      "当目标跳跃时，找到新位置并在下次跳跃前真正对焦上去。",
+      "用较慢速度练习干净对焦；提高速度时可作为更强的反应训练。",
     ],
     benefits:
-      "Reaction Jumps trains quick target acquisition, saccadic eye movement, peripheral detection, and fast refocusing. It is useful when you want to react to a new visual target without moving your head first.",
+      "反应跳跃训练快速目标捕捉、跳跃性眼动（扫视）、周边检测和快速重新对焦能力。适合需要在不移动头部的情况下快速响应新视觉目标的场景。",
   },
   {
     mode: "mot",
-    title: "Multiple Distractions",
-    summary:
-      "Sharpen selective focus by tracking the brightest target through moving distractions.",
+    title: "多目标追踪",
+    summary: "在移动干扰物中追踪最亮的目标，从而提升选择性专注力。",
     steps: [
-      "Keep your head still and lock onto the main, brightest ball.",
-      "Follow it like Smooth Pursuit, but do not let the darker balls pull your eyes away.",
-      "Start with fewer distractors, then add more when you can keep the target cleanly.",
+      "保持头部不动，锁定主目标（最亮的球）。",
+      "像平滑追踪一样跟随它，但不要让颜色较暗的球吸引视线。",
+      "从少量干扰物开始，当能稳定锁定目标后再逐渐增加。",
     ],
     benefits:
-      "Multiple Distractions trains selective attention, visual tracking under clutter, and target identity. The job is not just following motion. You also have to keep choosing the right object when similar objects compete for attention.",
+      "多目标追踪训练选择性注意力、在视觉干扰下的追踪能力和目标身份识别。任务不仅仅是跟随运动，还需要在相似物体争夺注意力时持续选择正确的目标。",
   },
   {
     mode: "lilacChaser",
-    title: "Lilac Chaser",
-    summary: "Train peripheral awareness by holding focus on the center cross.",
+    title: "幻影追踪",
+    summary: "通过将视线固定在中心十字上来训练周边视野感知。",
     steps: [
-      "Look only at the black cross in the middle.",
-      "Do not follow the balls with your eyes.",
-      "Let the disappearing gap move around the fixed circle. With steady focus, the colored balls may fade and the missing spot can look like a moving green afterimage.",
+      "只看中间的黑色十字。",
+      "不要用眼睛追随球体。",
+      "让消失的间隙在固定圆圈周围移动。保持稳定凝视时，彩色球可能会淡出，缺失的位置可能看起来像一个移动的绿色残影。",
     ],
     benefits:
-      "Lilac Chaser trains fixation, peripheral awareness, visual attention, and noticing change away from the point you are looking at. For gaming, it can be a short warmup for catching movement near the edge of your vision without constantly shifting your gaze.",
+      "幻影追踪训练固视能力、周边视野感知、视觉注意力和觉察注视点以外变化的能力。对于游戏玩家，它可以作为短暂热身，帮助捕捉视野边缘的运动，而无需不断移动视线。",
   },
 ] as const;
 
@@ -80,35 +78,35 @@ export const getTrainingModeGuide = (mode: TrainingMode) =>
   trainingModeGuides[0];
 
 export const safetyNote =
-  "Practice software, not medical care. Stop if you feel eye strain, dizziness, headache, nausea, or any other discomfort.";
+  "本工具为练习软件，非医疗手段。如感到眼部疲劳、头晕、头痛、恶心或任何不适，请立即停止。";
 
 export const referenceLinks = [
   {
-    label: "Visual guidance of smooth pursuit eye movements",
+    label: "平滑追踪眼动的视觉引导",
     url: "https://pubmed.ncbi.nlm.nih.gov/20510853/",
   },
   {
-    label: "Spatial allocation of attention during smooth pursuit",
+    label: "平滑追踪中的空间注意力分配",
     url: "https://pubmed.ncbi.nlm.nih.gov/19533852/",
   },
   {
-    label: "Saccadic reaction time factors",
+    label: "扫视反应时间影响因素",
     url: "https://pubmed.ncbi.nlm.nih.gov/33324183/",
   },
   {
-    label: "Role of peripheral vision in saccade planning",
+    label: "周边视觉在扫视规划中的作用",
     url: "https://pubmed.ncbi.nlm.nih.gov/19146326/",
   },
   {
-    label: "Visual learning in multiple-object tracking",
+    label: "多目标追踪中的视觉学习",
     url: "https://pubmed.ncbi.nlm.nih.gov/18493599/",
   },
   {
-    label: "Lilac chaser illusion",
+    label: "幻影追踪视错觉",
     url: "https://en.wikipedia.org/wiki/Lilac_chaser",
   },
   {
-    label: "FPS Eye Training Warmup (HIGH FPS)",
+    label: "FPS 眼部训练热身（HIGH FPS）",
     url: "https://www.youtube.com/watch?v=WAPKAZhOFM4",
   },
 ] as const;

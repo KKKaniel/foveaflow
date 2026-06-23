@@ -23,256 +23,233 @@ export type TrainerRoute = {
 };
 
 const smoothPursuitSeoContent = {
-  kicker: "Smooth Pursuit",
-  heading: "Smooth Pursuit Eye Training",
-  hero: "Follow one moving target and train steady visual tracking.",
+  kicker: "平滑追踪",
+  heading: "平滑追踪眼部训练",
+  hero: "跟随一个移动目标，训练稳定的视觉追踪能力。",
   body: [
-    "Smooth Pursuit is FoveaFlow's moving-target drill. Keep your head still, follow one target with your eyes, and stay smooth instead of jumping ahead.",
-    "Choose an easy path when you want rhythm and control. Choose a harder path when you want more direction changes and more target-search demand.",
-    "Use Smooth Pursuit for short browser-based practice, a pre-game warmup, or a focused reset after dense screen work.",
+    "平滑追踪是 FoveaFlow 的移动目标训练模式。保持头部不动，用眼睛跟随目标，保持平滑而不是跳跃式追踪。",
+    "选择简单路径建立节奏和控制感；选择更难的路径增加方向变化和目标搜索需求。",
+    "将平滑追踪用于短暂的浏览器练习、游戏前热身或密集屏幕工作后的专注重置。",
   ],
   primaryCta: {
-    label: "Start Smooth Pursuit",
+    label: "开始平滑追踪",
     href: "/smooth-pursuit/",
   },
   secondaryCta: {
-    label: "Open the full guide",
+    label: "查看完整指南",
     href: "/guide/",
   },
   trustNote:
-    "Updated May 14, 2026. This is practice software, not medical care, so stop if the session feels uncomfortable.",
+    "更新于 2026 年 5 月 14 日。这是练习软件，非医疗手段。如训练感到不适，请停止。",
   faq: [
     {
-      question: "What is Smooth Pursuit?",
-      answer:
-        "Smooth Pursuit is a drill where you follow one moving target as steadily as you can with your eyes.",
+      question: "平滑追踪是什么？",
+      answer: "平滑追踪是一种训练，要求你尽可能平滑地用眼睛跟随一个移动目标。",
     },
     {
-      question: "When should I use Smooth Pursuit?",
-      answer:
-        "Use it when you want steady moving-target practice without the extra clutter of other drills.",
+      question: "什么时候应该使用平滑追踪？",
+      answer: "当你想要无其他干扰地练习稳定移动目标追踪时使用。",
     },
     {
-      question: "Which settings matter most?",
-      answer:
-        "Speed, target size, and path matter most because they change difficulty quickly.",
+      question: "哪些设置最重要？",
+      answer: "速度、目标大小和路径影响最大，因为它们能快速改变难度。",
     },
     {
-      question: "Which path is best for beginners?",
-      answer:
-        "Start with a predictable path such as Circle or Ellipse before moving to harder patterns.",
+      question: "初学者最适合哪种路径？",
+      answer: "先从可预测路径（如圆形或椭圆）开始，再逐步挑战更难的路径。",
     },
     {
-      question: "Is Smooth Pursuit good as a warmup?",
-      answer:
-        "Yes. It works well as a short visual warmup before games or demanding screen tasks.",
+      question: "平滑追踪适合作为热身吗？",
+      answer: "是的。它非常适合在游戏或高强度屏幕工作前进行短暂的视觉热身。",
     },
     {
-      question: "Is this medical treatment?",
-      answer:
-        "No. FoveaFlow is practice software and should not replace professional care.",
+      question: "这是医疗治疗吗？",
+      answer: "不是。FoveaFlow 是练习软件，不能替代专业医疗。",
     },
   ],
 } satisfies PageSeoContent;
 
 const reactionJumpsSeoContent = {
-  kicker: "Reaction Jumps",
-  heading: "Reaction Jumps Eye Training",
-  hero: "Snap to the next target and train fast refocus.",
+  kicker: "反应跳跃",
+  heading: "反应跳跃眼部训练",
+  hero: "快速锁定下一个目标，训练快速对焦能力。",
   body: [
-    "Reaction Jumps is the drill to use when moving smoothly is not the point. The target holds still, then jumps to a new location.",
-    "This mode is useful when you want faster target acquisition and cleaner refocusing. Start slower for accuracy, then raise the speed for a more demanding session.",
-    "Reaction Jumps works well as a short pre-game warmup or a fast visual reset between tasks.",
+    "反应跳跃是当平滑移动不再是重点时的训练模式。目标静止后跳到新位置。",
+    "当你想要更快的目标捕捉和更干净的重新对焦时，这个模式很有用。慢速练习准确性，提速后进行更高要求的训练。",
+    "反应跳跃适合作为游戏前的短暂热身或任务切换间的快速视觉重置。",
   ],
   primaryCta: {
-    label: "Start Reaction Jumps",
+    label: "开始反应跳跃",
     href: "/reaction-jumps/",
   },
   secondaryCta: {
-    label: "Compare all drills",
+    label: "对比所有训练",
     href: "/guide/",
   },
   trustNote:
-    "Updated May 14, 2026. Keep sessions brief and controlled. If the drill causes strain or discomfort, stop.",
+    "更新于 2026 年 5 月 14 日。保持训练简短而受控。如训练引起疲劳或不适，请停止。",
   faq: [
     {
-      question: "What does Reaction Jumps train?",
-      answer:
-        "Reaction Jumps trains quick target acquisition and quick refocus from one target position to the next.",
+      question: "反应跳跃训练什么？",
+      answer: "反应跳跃训练快速目标捕捉和从一个目标位置快速重新对焦到下一个的能力。",
     },
     {
-      question: "When should I choose this over Smooth Pursuit?",
-      answer:
-        "Choose Reaction Jumps when you want discrete target changes rather than continuous motion.",
+      question: "什么时候选择它而非平滑追踪？",
+      answer: "当你想要离散的目标变化而非连续运动时，选择反应跳跃。",
     },
     {
-      question: "How do I make it easier?",
-      answer:
-        "Lower the speed and increase target size so you have more time to settle on each jump.",
+      question: "如何降低难度？",
+      answer: "降低速度并增大目标大小，给自己更多时间在每次跳跃后稳定对焦。",
     },
     {
-      question: "How do I make it harder?",
-      answer:
-        "Raise the speed and reduce target size so you must find each new position faster.",
+      question: "如何提高难度？",
+      answer: "提高速度并缩小目标大小，要求你更快找到每个新位置。",
     },
     {
-      question: "Is Reaction Jumps useful before games?",
-      answer:
-        "Yes. It can be a short warmup for games that reward fast visual reactions.",
+      question: "反应跳跃适合游戏前热身吗？",
+      answer: "是的。它是注重快速视觉反应的游戏的良好热身训练。",
     },
     {
-      question: "Is this meant to improve eyesight?",
-      answer:
-        "No. It is designed for practice, not to promise eyesight improvement.",
+      question: "这是改善视力的手段吗？",
+      answer: "不是。它专为练习设计，不承诺改善视力效果。",
     },
   ],
 } satisfies PageSeoContent;
 
 const multipleDistractionsSeoContent = {
-  kicker: "Multiple Distractions",
-  heading: "Distractor Tracking Eye Training",
-  hero: "Hold the right target even when the screen gets busy.",
+  kicker: "多目标追踪",
+  heading: "干扰目标追踪眼部训练",
+  hero: "即使屏幕变得繁忙，也要锁定正确目标。",
   body: [
-    "Multiple Distractions is FoveaFlow's clutter drill. One target matters most, but other moving objects share the screen and try to pull your attention away.",
-    "This mode is a strong fit when you want to practice selective attention and target identity under visual noise.",
-    "Use this drill when Smooth Pursuit feels too clean and you want a more realistic visual-attention challenge.",
+    "多目标追踪是 FoveaFlow 的干扰模式。一个目标最为重要，但其他移动物体共享屏幕并试图吸引你的注意力。",
+    "当你想要练习选择性注意力和在视觉噪音下的目标身份识别时，这个模式非常合适。",
+    "当平滑追踪感觉太简单，需要更真实的视觉注意挑战时，使用此训练。",
   ],
   primaryCta: {
-    label: "Start Distractor Tracking",
+    label: "开始干扰追踪",
     href: "/multiple-distractions/",
   },
   secondaryCta: {
-    label: "Try Smooth Pursuit first",
+    label: "先试试平滑追踪",
     href: "/smooth-pursuit/",
   },
   trustNote:
-    "Updated May 14, 2026. Start with fewer distractors or a bigger target, and stop if the session becomes uncomfortable.",
+    "更新于 2026 年 5 月 14 日。从较少的干扰物或较大的目标开始，如训练变得不适请停止。",
   faq: [
     {
-      question: "What is distractor tracking?",
-      answer:
-        "It is the task of following the correct target while similar moving objects compete for your attention.",
+      question: "干扰追踪是什么？",
+      answer: "在相似的移动物体争夺注意力时，跟随正确目标的任务。",
     },
     {
-      question: "What does Multiple Distractions train?",
-      answer:
-        "It trains selective attention, target identity, and steady tracking under clutter.",
+      question: "多目标追踪训练什么？",
+      answer: "训练选择性注意力、目标身份识别和在干扰下的稳定追踪。",
     },
     {
-      question: "How should beginners start?",
-      answer:
-        "Start with fewer distractors, a slower speed, and a larger main target.",
+      question: "初学者如何开始？",
+      answer: "从较少的干扰物、较慢的速度和较大的主目标开始。",
     },
     {
-      question: "When should I use this mode?",
-      answer:
-        "Use it when you want a busier, harder tracking task than Smooth Pursuit.",
+      question: "什么时候使用这个模式？",
+      answer: "当你想要比平滑追踪更繁忙、更难的追踪任务时使用。",
     },
     {
-      question: "Is this good for gamers?",
-      answer:
-        "Yes. It can be useful as a short warmup for games where visual clutter matters.",
+      question: "这对游戏玩家有用吗？",
+      answer: "是的。对于视觉干扰较多的游戏，它可以是短暂的热身训练。",
     },
     {
-      question: "Is this a medical tool?",
-      answer:
-        "No. It is practice software, not a treatment or diagnostic tool.",
+      question: "这是医疗工具吗？",
+      answer: "不是。它是练习软件，不是治疗或诊断工具。",
     },
   ],
 } satisfies PageSeoContent;
 
 const lilacChaserSeoContent = {
-  kicker: "Lilac Chaser",
-  heading: "Lilac Chaser Fixation and Peripheral Awareness",
-  hero: "Hold steady at the center and notice change around it.",
+  kicker: "幻影追踪",
+  heading: "幻影追踪固视与周边视野感知",
+  hero: "在中心保持稳定注视，感知周围的变化。",
   body: [
-    "Lilac Chaser is different from the moving-target drills. Instead of following an object, you keep your eyes on the center cross while the outer ring changes.",
-    "This mode works best when you resist the urge to chase the disappearing gap. Keep your gaze centered, stay relaxed, and let the effect happen on its own.",
-    "Use Lilac Chaser for a short fixation drill, a perceptual reset, or a quick change of pace between more active modes.",
+    "幻影追踪与移动目标训练不同。你不是追随物体，而是将视线保持在中心十字上，同时外圈发生变化。",
+    "当你抵制追随消失间隙的冲动时，这个模式效果最好。保持视线居中，放松，让效果自然发生。",
+    "将幻影追踪用于短暂的固视训练、感知重置，或在更活跃的模式之间快速切换节奏。",
   ],
   primaryCta: {
-    label: "Start Lilac Chaser",
+    label: "开始幻影追踪",
     href: "/lilac-chaser/",
   },
   secondaryCta: {
-    label: "Try another drill",
+    label: "试试其他训练",
     href: "/guide/",
   },
   trustNote:
-    "Updated May 14, 2026. If the visual effect feels strange or uncomfortable, stop the session and rest.",
+    "更新于 2026 年 5 月 14 日。如视觉效果感觉奇怪或不适，请停止并休息。",
   faq: [
     {
-      question: "What is Lilac Chaser?",
-      answer:
-        "Lilac Chaser is a fixation drill where you keep your gaze on a central cross while the outer pattern changes.",
+      question: "幻影追踪是什么？",
+      answer: "幻影追踪是一种固视训练，要求你将视线保持在中心十字上，同时外圈的图案发生变化。",
     },
     {
-      question: "What is the goal of this mode?",
-      answer:
-        "The goal is steady fixation and better awareness of change away from the center of your gaze.",
+      question: "这个模式的目标是什么？",
+      answer: "目标是稳定固视，以及更好地感知注视点以外的变化。",
     },
     {
-      question: "Should I follow the outer shapes?",
-      answer:
-        "No. Keep your eyes on the center cross and let the visual effect happen in the periphery.",
+      question: "我应该追随外圈形状吗？",
+      answer: "不应该。将视线保持在中心十字上，让视觉效果在周边发生。",
     },
     {
-      question: "When should I use this mode?",
-      answer:
-        "Use it when you want a fixation-focused drill rather than a moving-target tracking session.",
+      question: "什么时候使用这个模式？",
+      answer: "当你想要以固视为主的训练而非移动目标追踪时使用。",
     },
     {
-      question: "Is this the same as medical peripheral-vision therapy?",
-      answer:
-        "No. It is a browser-based practice drill and not medical treatment.",
+      question: "这和医疗周边视野训练一样吗？",
+      answer: "不一样。这是浏览器端练习工具，不是医疗治疗。",
     },
     {
-      question: "What if the effect feels strange or uncomfortable?",
-      answer: "Stop the session and rest. Do not push through discomfort.",
+      question: "如果效果感觉奇怪或不适怎么办？",
+      answer: "停止训练并休息。不要硬撑过不适感。",
     },
   ],
 } satisfies PageSeoContent;
 
 const patternSummaries: Partial<Record<PatternId, string>> = {
   randomWalk:
-    "Random removes the comfort of a repeating loop. Because the target changes direction and position less predictably, the drill adds more target-search work than a simple circle or ellipse.",
+    "随机路径去除了重复循环的舒适感。由于目标以较难预测的方式改变方向和位置，这个训练比简单的圆形或椭圆增加了更多目标搜索难度。",
   circle:
-    "Circle is the easiest repeating Smooth Pursuit pattern and the best starting point for most users. The loop is predictable, which makes it useful for warmups and speed changes.",
+    "圆形是最简单的重复平滑追踪路径，也是大多数用户的最佳起点。循环可预测，适合热身和速度调整。",
   ellipse:
-    "Ellipse keeps the calm rhythm of Circle but changes the width and height of the motion. It is a good bridge pattern when you want a familiar loop with more range.",
+    "椭圆保留了圆形的平静节奏，但改变了运动的宽高比。当你想要熟悉的循环但范围更广时，这是一个很好的过渡路径。",
   figureEight:
-    "Figure Eight adds a crossover point, which means the target passes through the center and changes direction more often than a simple loop.",
-  wave: "Wave introduces a repeating up-and-down rhythm on top of horizontal movement. It stays readable and smooth without the abrupt feel of hard corners.",
+    "八字形增加了一个交叉点，这意味着目标比简单的循环更频繁地穿过中心并改变方向。",
+  wave: "波浪在水平运动上引入了重复的上下节奏。它保持可读性和平滑性，而没有急转弯的突兀感。",
   diagonal:
-    "Diagonal uses longer corner-to-corner motion, so it emphasizes broader screen coverage and clean tracking over distance.",
+    "对角线使用更长的角到角运动，强调更广泛的屏幕覆盖和远距离的干净追踪。",
   bounce:
-    "Bounce adds repeated reversals at the edges. It is useful when you want more direction changes and less continuous flow than Circle or Wave.",
+    "弹跳在边缘增加了重复的反向运动。当你想要比圆形或波浪更多的方向变化和更少连续流动时，它很有用。",
   directionChange:
-    "Hard Turns is one of the most demanding Smooth Pursuit patterns because the target changes direction abruptly.",
+    "急转弯是最具挑战性的平滑追踪路径之一，因为目标会突然改变方向。",
   horizontalSweep:
-    "Horizontal Sweep keeps the motion simple and broad for left-right tracking across a larger visual range.",
+    "水平扫描保持简单宽广的运动，适合在更大视觉范围内进行左右追踪。",
   verticalSweep:
-    "Vertical Sweep mirrors the simplicity of Horizontal Sweep but changes the direction of travel for straightforward up-down tracking.",
+    "垂直扫描与水平扫描一样简单，但改变了运动方向，适合直接的上下追踪。",
   downRightSweep:
-    "Down-right Sweep moves from the top-left corner toward the bottom-right corner on a simple diagonal line.",
+    "右下扫描沿简单对角线从左上角向右下角移动。",
   downLeftSweep:
-    "Down-left Sweep moves from the top-right corner toward the bottom-left corner on a simple diagonal line.",
+    "左下扫描沿简单对角线从右上角向左下角移动。",
   perimeterLoop:
-    "Edge Loop pushes the target around the perimeter, making the drill more spacious and edge-focused than center-heavy loops.",
+    "边缘环绕将目标沿边界推进，使训练比以中心为主的循环更宽广和边缘化。",
   diamondLoop:
-    "Diamond Loop combines a simple repeating route with clear corner transitions and sharper shifts than Circle.",
+    "菱形环绕结合了简单重复路线与清晰的角落过渡，比圆形有更明显的方向转变。",
   clover:
-    "Clover creates repeated looping lobes for continuous motion with more shape variation than Circle.",
+    "四叶草创造重复的循环叶片，实现比圆形更多形状变化的连续运动。",
   zigZag:
-    "Zigzag adds frequent directional switching, so it feels more aggressive than Wave or Diagonal.",
+    "锯齿形频繁切换方向，因此比波浪或对角线感觉更激烈。",
   stairStep:
-    "Stair Steps creates a mechanical route with discrete directional segments that stays easier to predict than Random or Hard Turns.",
+    "阶梯创造带有离散方向段的机械路线，比随机或急转弯更容易预测。",
   lissajous:
-    "Lissajous is one of the more complex flowing patterns because the target moves through a looping path that changes its relationship to the center over time.",
+    "利萨如曲线是更复杂的流动路径之一，目标沿着随时间改变与中心关系的循环路径移动。",
   hourglass:
-    "Hourglass narrows through the middle and opens back out, creating repeated crossing behavior with a constrained shape.",
+    "沙漏在中间收窄后再展开，创造具有受限形状的重复交叉行为。",
   cornerTour:
-    "Corner Tour gives each corner of the display a deliberate role, making the route spacious and structured.",
+    "角落巡游给屏幕的每个角落一个明确的角色，使路线宽广而有结构。",
 };
 
 type PublicPursuitPatternRoute = {
@@ -282,42 +259,26 @@ type PublicPursuitPatternRoute = {
 };
 
 const publicPursuitPatternRoutes = [
-  { patternId: "randomWalk", slug: "random", label: "Random" },
-  { patternId: "circle", slug: "circle", label: "Circle" },
-  { patternId: "ellipse", slug: "ellipse", label: "Ellipse" },
-  { patternId: "figureEight", slug: "figure-eight", label: "Figure eight" },
-  { patternId: "wave", slug: "wave", label: "Wave" },
-  { patternId: "diagonal", slug: "diagonal", label: "Diagonal" },
-  { patternId: "bounce", slug: "bounce", label: "Bounce" },
-  { patternId: "directionChange", slug: "hard-turns", label: "Hard turns" },
-  {
-    patternId: "horizontalSweep",
-    slug: "horizontal-sweep",
-    label: "Horizontal sweep",
-  },
-  {
-    patternId: "verticalSweep",
-    slug: "vertical-sweep",
-    label: "Vertical sweep",
-  },
-  {
-    patternId: "downRightSweep",
-    slug: "down-right-sweep",
-    label: "Down-right sweep",
-  },
-  {
-    patternId: "downLeftSweep",
-    slug: "down-left-sweep",
-    label: "Down-left sweep",
-  },
-  { patternId: "perimeterLoop", slug: "edge-loop", label: "Edge loop" },
-  { patternId: "diamondLoop", slug: "diamond-loop", label: "Diamond loop" },
-  { patternId: "clover", slug: "clover", label: "Clover" },
-  { patternId: "zigZag", slug: "zigzag", label: "Zigzag" },
-  { patternId: "stairStep", slug: "stair-steps", label: "Stair steps" },
-  { patternId: "lissajous", slug: "lissajous", label: "Lissajous" },
-  { patternId: "hourglass", slug: "hourglass", label: "Hourglass" },
-  { patternId: "cornerTour", slug: "corner-tour", label: "Corner tour" },
+  { patternId: "randomWalk", slug: "random", label: "随机" },
+  { patternId: "circle", slug: "circle", label: "圆形" },
+  { patternId: "ellipse", slug: "ellipse", label: "椭圆" },
+  { patternId: "figureEight", slug: "figure-eight", label: "八字形" },
+  { patternId: "wave", slug: "wave", label: "波浪" },
+  { patternId: "diagonal", slug: "diagonal", label: "对角线" },
+  { patternId: "bounce", slug: "bounce", label: "弹跳" },
+  { patternId: "directionChange", slug: "hard-turns", label: "急转弯" },
+  { patternId: "horizontalSweep", slug: "horizontal-sweep", label: "水平扫描" },
+  { patternId: "verticalSweep", slug: "vertical-sweep", label: "垂直扫描" },
+  { patternId: "downRightSweep", slug: "down-right-sweep", label: "右下扫描" },
+  { patternId: "downLeftSweep", slug: "down-left-sweep", label: "左下扫描" },
+  { patternId: "perimeterLoop", slug: "edge-loop", label: "边缘环绕" },
+  { patternId: "diamondLoop", slug: "diamond-loop", label: "菱形环绕" },
+  { patternId: "clover", slug: "clover", label: "四叶草" },
+  { patternId: "zigZag", slug: "zigzag", label: "锯齿形" },
+  { patternId: "stairStep", slug: "stair-steps", label: "阶梯" },
+  { patternId: "lissajous", slug: "lissajous", label: "利萨如曲线" },
+  { patternId: "hourglass", slug: "hourglass", label: "沙漏" },
+  { patternId: "cornerTour", slug: "corner-tour", label: "角落巡游" },
 ] satisfies readonly PublicPursuitPatternRoute[];
 
 const buildPatternSeoContent = (
@@ -326,44 +287,44 @@ const buildPatternSeoContent = (
   patternId: PatternId,
 ) =>
   ({
-    kicker: "Smooth Pursuit pattern",
-    heading: `${toTitleCase(label)} Smooth Pursuit Drill`,
-    hero: `Use the ${label} path for short smooth pursuit practice.`,
+    kicker: "平滑追踪路径",
+    heading: `${label}平滑追踪训练`,
+    hero: `使用${label}路径进行短暂的平滑追踪练习。`,
     body: [
       patternSummaries[patternId] ??
-        `${label} loads a dedicated Smooth Pursuit path so you can start that style of moving-target practice immediately.`,
-      "Start with a comfortable speed and a medium target size, then raise difficulty only when you can stay on the target cleanly.",
+        `${label}路径加载专属的平滑追踪模式，让你立即开始该类型的移动目标练习。`,
+      "从舒适的速度和中等目标大小开始，只有当你能稳定锁定目标时再提升难度。",
     ],
     primaryCta: {
-      label: `Start ${label}`,
+      label: `开始${label}`,
       href: path,
     },
     secondaryCta: {
-      label: "Open Smooth Pursuit",
+      label: "打开平滑追踪",
       href: "/smooth-pursuit/",
     },
     trustNote:
-      "Updated May 14, 2026. This is a browser-based practice drill and not medical therapy.",
+      "更新于 2026 年 5 月 14 日。这是浏览器端练习工具，非医疗手段。",
     faq: [
       {
-        question: `What is the ${label} drill?`,
+        question: `${label}训练是什么？`,
         answer:
-          "It is a Smooth Pursuit pattern page that loads the matching path so you can start that style of moving-target practice immediately.",
+          "这是一个平滑追踪路径页面，加载匹配路径后可立即开始该类型的移动目标练习。",
       },
       {
-        question: `What makes the ${label} path different?`,
+        question: `${label}路径有什么特别之处？`,
         answer:
-          "The path shape changes how predictable the movement feels and how often the target changes direction.",
+          "路径形状改变了运动的可预测性以及目标改变方向的频率。",
       },
       {
-        question: "How do I make this pattern easier?",
+        question: "如何让这个路径更简单？",
         answer:
-          "Lower the speed, increase target size, and keep the trail visible until you can stay on target comfortably.",
+          "降低速度、增大目标大小，并保持轨迹可见，直到你能稳定跟上目标为止。",
       },
       {
-        question: "How do I make this pattern harder?",
+        question: "如何让这个路径更难？",
         answer:
-          "Raise the speed, reduce target size, or switch from an easy loop to a more demanding path.",
+          "提高速度、缩小目标大小，或从简单循环切换到更具挑战性的路径。",
       },
     ],
   }) satisfies PageSeoContent;
@@ -374,11 +335,11 @@ export const trainerRoutes = [
     path: "/smooth-pursuit/",
     mode: "pursuit",
     patternId: "randomWalk",
-    label: "Smooth Pursuit",
-    heading: "Smooth Pursuit Eye Training",
-    title: `${siteMetadata.name} - Free Online Smooth Pursuit Eye Trainer`,
+    label: "平滑追踪",
+    heading: "平滑追踪眼部训练",
+    title: `${siteMetadata.name} - 免费在线平滑追踪视觉训练工具`,
     description:
-      "Free online eye trainer for smooth pursuit, visual tracking, and steady moving-target practice. Browser-based with no account or install.",
+      "免费在线视觉训练工具，专注于平滑追踪、视觉追踪和稳定移动目标练习。无需注册或安装，直接在浏览器中使用。",
     indexable: true,
     seoContent: smoothPursuitSeoContent,
   },
@@ -388,9 +349,9 @@ export const trainerRoutes = [
     mode: "pursuit" as const,
     patternId: patternRoute.patternId,
     label: patternRoute.label,
-    heading: `${toTitleCase(patternRoute.label)} Smooth Pursuit Eye Training`,
-    title: `${siteMetadata.name} - ${toTitleCase(patternRoute.label)} Smooth Pursuit Drill`,
-    description: `Practice the ${patternRoute.label} smooth pursuit pattern online. Adjust speed, target size, color, trail, and screen scale for short visual tracking sessions.`,
+    heading: `${patternRoute.label}平滑追踪眼部训练`,
+    title: `${siteMetadata.name} - ${patternRoute.label}平滑追踪训练`,
+    description: `在线练习${patternRoute.label}平滑追踪路径。可调整速度、目标大小、颜色、轨迹和屏幕比例，进行短暂的视觉追踪训练。`,
     indexable: false,
     seoContent: buildPatternSeoContent(
       patternRoute.label,
@@ -402,11 +363,11 @@ export const trainerRoutes = [
     slug: "reaction-jumps",
     path: "/reaction-jumps/",
     mode: "reactionTime",
-    label: "Reaction Jumps",
-    heading: "Reaction Jumps Eye Training",
-    title: `${siteMetadata.name} - Free Online Reaction Jumps Eye Trainer`,
+    label: "反应跳跃",
+    heading: "反应跳跃眼部训练",
+    title: `${siteMetadata.name} - 免费在线反应跳跃视觉训练工具`,
     description:
-      "Free online eye trainer for quick refocus, target acquisition, and fast visual reaction practice. Browser-based with no account or install.",
+      "免费在线视觉训练工具，专注于快速对焦、目标捕捉和快速视觉反应练习。无需注册或安装，直接在浏览器中使用。",
     indexable: true,
     seoContent: reactionJumpsSeoContent,
   },
@@ -414,11 +375,11 @@ export const trainerRoutes = [
     slug: "multiple-distractions",
     path: "/multiple-distractions/",
     mode: "mot",
-    label: "Multiple Distractions",
-    heading: "Distractor Tracking Eye Training",
-    title: `${siteMetadata.name} - Free Online Multiple Distractions Eye Trainer`,
+    label: "多目标追踪",
+    heading: "干扰目标追踪眼部训练",
+    title: `${siteMetadata.name} - 免费在线多目标追踪视觉训练工具`,
     description:
-      "Free online eye trainer for selective attention, distractor tracking, and focus under visual clutter. Browser-based with no account or install.",
+      "免费在线视觉训练工具，专注于选择性注意力、干扰追踪和视觉干扰下的专注训练。无需注册或安装，直接在浏览器中使用。",
     indexable: true,
     seoContent: multipleDistractionsSeoContent,
   },
@@ -426,11 +387,11 @@ export const trainerRoutes = [
     slug: "lilac-chaser",
     path: "/lilac-chaser/",
     mode: "lilacChaser",
-    label: "Lilac Chaser",
-    heading: "Lilac Chaser Fixation and Peripheral Awareness",
-    title: `${siteMetadata.name} - Free Online Lilac Chaser Eye Trainer`,
+    label: "幻影追踪",
+    heading: "幻影追踪固视与周边视野感知",
+    title: `${siteMetadata.name} - 免费在线幻影追踪视觉训练工具`,
     description:
-      "Free online eye trainer for steady fixation, peripheral awareness, and noticing change outside center focus. Browser-based with no account or install.",
+      "免费在线视觉训练工具，专注于稳定固视、周边视野感知和觉察中心焦点以外的变化。无需注册或安装，直接在浏览器中使用。",
     indexable: true,
     seoContent: lilacChaserSeoContent,
   },

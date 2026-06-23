@@ -40,44 +40,44 @@ export const supportPages = [
   {
     slug: "fps-eye-training",
     path: "/fps-eye-training/",
-    title: "FoveaFlow - FPS Eye Training Warmup",
+    title: "FoveaFlow - FPS 眼部训练热身",
     description:
-      "Use FoveaFlow as a free FPS eye training warmup for visual tracking, quick refocus, target switching, and focus under distraction.",
-    kicker: "FPS warmup",
-    heading: "FPS Eye Training Warmup",
+      "使用 FoveaFlow 作为免费的 FPS 眼部训练热身工具，涵盖视觉追踪、快速对焦、目标切换和干扰下的专注训练。",
+    kicker: "FPS 热身",
+    heading: "FPS 眼部训练热身",
     summary:
-      "FoveaFlow is a free browser-based FPS eye training warmup. Use Smooth Pursuit for moving-target tracking, Reaction Jumps for quick refocus, and Multiple Distractions for staying locked on the right target through visual clutter.",
+      "FoveaFlow 是一款免费的浏览器端 FPS 眼部训练热身工具。使用平滑追踪进行移动目标追踪，使用反应跳跃快速对焦，使用多目标追踪在视觉干扰中锁定正确目标。",
     primaryCta: {
-      label: "Start the warmup",
+      label: "开始热身",
       href: "/",
     },
     secondaryCta: {
-      label: "Read the guide",
+      label: "查看指南",
       href: "/guide/",
     },
     sections: [
       {
-        heading: "7-minute FPS eye warmup",
+        heading: "7 分钟 FPS 眼部热身方案",
         orderedList: [
-          "3 minutes Smooth Pursuit: follow the target smoothly.",
-          "2 minutes Reaction Jumps: find each new target position quickly.",
-          "1 minute Multiple Distractions: stay locked on the brightest target.",
-          "1 minute Lilac Chaser: hold center focus and notice peripheral change.",
+          "3 分钟平滑追踪：平滑跟随目标。",
+          "2 分钟反应跳跃：快速找到每个新目标位置。",
+          "1 分钟多目标追踪：保持锁定最亮的目标。",
+          "1 分钟幻影追踪：保持中心对焦并感知周边变化。",
         ],
       },
       {
-        heading: "Which drill to use",
+        heading: "选择哪种训练",
         list: [
-          "Smooth Pursuit is for steady moving-target tracking.",
-          "Reaction Jumps is for reaction time training, fast refocus, and target switching.",
-          "Multiple Distractions is for staying with the right target when the screen is busy.",
-          "Lilac Chaser is for fixation and peripheral awareness.",
+          "平滑追踪适合稳定的移动目标追踪。",
+          "反应跳跃适合反应时间训练、快速对焦和目标切换。",
+          "多目标追踪适合在屏幕繁忙时锁定正确目标。",
+          "幻影追踪适合固视和周边视野感知。",
         ],
       },
       {
-        heading: "Keep it short",
+        heading: "保持简短",
         body: [
-          "Use FoveaFlow as practice software, not medical care. Stop if a session causes eye strain, dizziness, headache, nausea, or discomfort.",
+          "将 FoveaFlow 作为练习软件使用，而非医疗手段。如训练引起眼部疲劳、头晕、头痛、恶心或不适，请停止。",
         ],
       },
     ],
@@ -85,191 +85,166 @@ export const supportPages = [
   {
     slug: "blinkcamp-alternative",
     path: "/blinkcamp-alternative/",
-    title: "FoveaFlow - BlinkCamp Alternative for Eye Training",
+    title: "FoveaFlow - BlinkCamp 眼部训练替代方案",
     description:
-      "Compare FoveaFlow and BlinkCamp for free browser-based eye training, visual tracking, FPS warmups, reaction jumps, and distractor tracking.",
-    kicker: "Alternative",
+      "比较 FoveaFlow 和 BlinkCamp 在免费浏览器端眼部训练、视觉追踪、FPS 热身、反应跳跃和干扰追踪方面的差异。",
+    kicker: "替代方案",
     heading: "FoveaFlow vs BlinkCamp",
     summary:
-      "FoveaFlow and BlinkCamp are both free browser-based eye training tools. FoveaFlow is the stronger fit when you want direct drill links, FPS warmup use, reaction jumps, distractor tracking, and deeper control over how the target moves and appears.",
+      "FoveaFlow 和 BlinkCamp 都是免费的浏览器端眼部训练工具。如果你需要直接的训练链接、FPS 热身用途、反应跳跃、干扰追踪以及对目标运动和外观的深度控制，FoveaFlow 更适合你。",
     primaryCta: {
-      label: "Try FoveaFlow",
+      label: "试用 FoveaFlow",
       href: "/",
     },
     secondaryCta: {
-      label: "Compare drills",
+      label: "对比训练模式",
       href: "/guide/",
     },
     sourceLink: {
-      label: "Visit BlinkCamp",
+      label: "访问 BlinkCamp",
       href: "https://blinkcamp.com/",
     },
     sections: [
       {
-        heading: "Best fit",
+        heading: "最佳选择",
         body: [
-          "Choose FoveaFlow when you want direct drill links, adjustable target behavior, and a clean full-screen canvas for short visual tracking sessions.",
-          "Choose BlinkCamp if you want a simple browser tool centered on basic eye-training routines and speed-and-size adjustment.",
+          "如果你需要直接训练链接、可调节目标行为以及干净全屏画布进行短暂视觉追踪训练，选择 FoveaFlow。",
+          "如果你需要一个以基础眼部训练例程和速度大小调整为核心的简洁浏览器工具，选择 BlinkCamp。",
         ],
       },
       {
-        heading: "What FoveaFlow includes",
+        heading: "FoveaFlow 包含的功能",
         list: [
-          "Smooth Pursuit for one-target visual tracking.",
-          "Reaction Jumps for quick refocus.",
-          "Multiple Distractions for focus under visual clutter.",
-          "Lilac Chaser for fixation and peripheral awareness.",
-          "Controls for speed units, target size, shape, color, opacity, trail length, motion path, motion behavior, distractor count, distractor brightness, letter overlays, viewing distance, and screen scale.",
+          "平滑追踪：单目标视觉追踪。",
+          "反应跳跃：快速对焦训练。",
+          "多目标追踪：在视觉干扰下保持专注。",
+          "幻影追踪：固视和周边视野感知。",
+          "速度单位、目标大小、形状、颜色、透明度、轨迹长度、运动路径、运动行为、干扰物数量、干扰物亮度、字母叠加、观看距离和屏幕比例等全面控制选项。",
         ],
       },
     ],
     comparisonLabel: "BlinkCamp",
     comparisonRows: [
       {
-        feature: "Can I use it free in the browser?",
-        foveaflow:
-          "Yes. The app runs in the browser with no account or install.",
-        alternative:
-          "Yes. BlinkCamp is also a free browser-based eye training tool.",
+        feature: "可以在浏览器中免费使用吗？",
+        foveaflow: "是的。无需账号或安装，直接在浏览器中运行。",
+        alternative: "是的。BlinkCamp 也是免费的浏览器端眼部训练工具。",
       },
       {
-        feature: "Can I adjust speed and target size?",
-        foveaflow:
-          "Yes. Speed can be tuned in deg/s, cm/s, or screen/s, and target size can be changed per session.",
-        alternative: "Yes. BlinkCamp exposes simple speed and size controls.",
+        feature: "可以调整速度和目标大小吗？",
+        foveaflow: "是的。速度可以用 deg/s、cm/s 或 screen/s 调整，目标大小可按训练会话设置。",
+        alternative: "是的。BlinkCamp 提供简单的速度和大小控制。",
       },
       {
-        feature: "Can I change how the target looks?",
-        foveaflow:
-          "Shape, color, opacity, trail length, and trail behavior are adjustable.",
-        alternative:
-          "BlinkCamp keeps the public controls simpler, with the main visible controls focused on speed and size.",
+        feature: "可以更改目标外观吗？",
+        foveaflow: "形状、颜色、透明度、轨迹长度和轨迹行为均可调整。",
+        alternative: "BlinkCamp 的公开控制项较为简洁，主要集中在速度和大小上。",
       },
       {
-        feature: "Can I change paths and motion behavior?",
-        foveaflow:
-          "Path, direction changes, steady motion, speed waves, bursts, build/reset, and size pulse options are available depending on the drill.",
-        alternative:
-          "BlinkCamp uses a simpler routine-based setup rather than exposing the same path and motion-behavior controls.",
+        feature: "可以更改路径和运动行为吗？",
+        foveaflow: "根据训练模式，可选择路径、方向变化、匀速、速度波动、爆发、渐进/重置和大小脉冲等选项。",
+        alternative: "BlinkCamp 使用更简单的例程方式，而非暴露相同的路径和运动行为控制。",
       },
       {
-        feature: "Can I train with distractors or letters?",
-        foveaflow:
-          "Multiple Distractions includes distractor count and brightness controls. Letter overlays include letter color, weight, and scale controls.",
-        alternative:
-          "BlinkCamp is more focused on straightforward eye-training routines than distractor and letter-overlay customization.",
+        feature: "可以使用干扰物或字母叠加训练吗？",
+        foveaflow: "多目标追踪包含干扰物数量和亮度控制；字母叠加包含颜色、粗细和缩放控制。",
+        alternative: "BlinkCamp 更专注于简单的眼部训练例程，而非干扰物和字母叠加定制。",
       },
       {
-        feature: "Can I calibrate the session to my setup?",
-        foveaflow:
-          "Viewing distance and screen scale controls help match motion to your setup.",
-        alternative:
-          "BlinkCamp keeps setup lighter and does not expose the same viewing-distance and screen-scale controls.",
+        feature: "可以根据我的设置校准训练吗？",
+        foveaflow: "观看距离和屏幕比例控制项可帮助将运动匹配到你的设置。",
+        alternative: "BlinkCamp 的设置更轻量，不提供相同的观看距离和屏幕比例控制。",
       },
       {
-        feature: "Which drill set is broader?",
-        foveaflow:
-          "Smooth Pursuit, Reaction Jumps, Multiple Distractions, and Lilac Chaser are available as separate modes.",
-        alternative:
-          "BlinkCamp has its own exercise set and a simpler public workflow.",
+        feature: "哪个训练模式更丰富？",
+        foveaflow: "提供平滑追踪、反应跳跃、多目标追踪和幻影追踪四种独立模式。",
+        alternative: "BlinkCamp 有其自己的练习集和更简洁的工作流程。",
       },
       {
-        feature: "Can I link straight to a drill?",
-        foveaflow:
-          "Yes. Main modes and Smooth Pursuit patterns have direct URLs.",
-        alternative: "BlinkCamp is organized around its own routine interface.",
+        feature: "可以直接链接到某个训练吗？",
+        foveaflow: "是的。主要模式和平滑追踪路径均有直接 URL。",
+        alternative: "BlinkCamp 围绕其自身的例程界面组织。",
       },
       {
-        feature: "Is there a public source link?",
-        foveaflow: "Yes. The GitHub repository is linked from the app.",
-        alternative: "Yes. BlinkCamp also links to GitHub.",
+        feature: "有公开源代码链接吗？",
+        foveaflow: "是的。GitHub 仓库链接在应用内提供。",
+        alternative: "是的。BlinkCamp 也链接到 GitHub。",
       },
     ],
   },
   {
     slug: "eyetrainer-gg-alternative",
     path: "/eyetrainer-gg-alternative/",
-    title: "FoveaFlow - EyeTrainer.gg Alternative for FPS Eye Training",
+    title: "FoveaFlow - EyeTrainer.gg FPS 眼部训练替代方案",
     description:
-      "Compare FoveaFlow and EyeTrainer.gg for FPS eye training, visual tracking, reaction drills, distraction control, and browser-based warmups.",
-    kicker: "Alternative",
+      "比较 FoveaFlow 和 EyeTrainer.gg 在 FPS 眼部训练、视觉追踪、反应训练、干扰控制和浏览器热身方面的差异。",
+    kicker: "替代方案",
     heading: "FoveaFlow vs EyeTrainer.gg",
     summary:
-      "FoveaFlow is a free browser-based eye trainer for FPS warmups, visual tracking, reaction jumps, distractor tracking, and peripheral awareness. It is a practical alternative if you want to start in the browser with no account or install.",
+      "FoveaFlow 是一款免费浏览器端眼部训练工具，适用于 FPS 热身、视觉追踪、反应跳跃、干扰追踪和周边视野感知。如果你想在浏览器中无需账号或安装即可开始训练，它是一个实用的替代选择。",
     primaryCta: {
-      label: "Try FoveaFlow",
+      label: "试用 FoveaFlow",
       href: "/",
     },
     secondaryCta: {
-      label: "Open FPS warmup",
+      label: "查看 FPS 热身方案",
       href: "/fps-eye-training/",
     },
     sourceLink: {
-      label: "Visit EyeTrainer.gg",
+      label: "访问 EyeTrainer.gg",
       href: "https://www.eyetrainer.gg/",
     },
     sections: [
       {
-        heading: "Best fit",
+        heading: "最佳选择",
         body: [
-          "Choose FoveaFlow if you want a lightweight web app with direct access to visual tracking, reaction, distractor, and fixation drills.",
-          "EyeTrainer.gg also offers simple browser patterns and promotes its upcoming Steam version from the public page.",
+          "如果你需要一个轻量网页应用，直接访问视觉追踪、反应、干扰和固视训练，选择 FoveaFlow。",
+          "EyeTrainer.gg 也提供简单的浏览器训练模式，并在公开页面推广其即将上线的 Steam 版本。",
         ],
       },
       {
-        heading: "What FoveaFlow includes",
+        heading: "FoveaFlow 包含的功能",
         list: [
-          "Smooth Pursuit paths for moving-target tracking.",
-          "Reaction Jumps for quick refocus.",
-          "Multiple Distractions for staying with a target through clutter.",
-          "Lilac Chaser for fixation and peripheral awareness.",
-          "Controls for speed units, target size, shape, color, opacity, trail length, motion path, motion behavior, distractors, letter overlays, viewing distance, screen scale, and mode-specific options such as Lilac Chaser ball scale.",
-          "Local settings with no account or install.",
+          "平滑追踪：多种路径的移动目标追踪。",
+          "反应跳跃：快速对焦训练。",
+          "多目标追踪：在干扰中锁定目标。",
+          "幻影追踪：固视和周边视野感知。",
+          "速度单位、目标大小、形状、颜色、透明度、轨迹长度、运动路径、运动行为、干扰物、字母叠加、观看距离、屏幕比例以及幻影追踪球体缩放等模式专属选项。",
+          "本地设置保存，无需账号或安装。",
         ],
       },
     ],
     comparisonLabel: "EyeTrainer.gg",
     comparisonRows: [
       {
-        feature: "Is it aimed at FPS eye training?",
-        foveaflow:
-          "Yes. FoveaFlow includes FPS warmup-friendly drills for tracking, refocus, and focus under clutter.",
-        alternative:
-          "Yes. EyeTrainer.gg is also positioned around FPS eye training.",
+        feature: "是否专注于 FPS 眼部训练？",
+        foveaflow: "是的。FoveaFlow 包含适合追踪、对焦和干扰下专注的 FPS 热身训练。",
+        alternative: "是的。EyeTrainer.gg 也定位于 FPS 眼部训练。",
       },
       {
-        feature: "Can I start in the browser?",
-        foveaflow: "Yes",
-        alternative:
-          "Yes. The public page includes simple browser patterns and also promotes a Steam wishlist.",
+        feature: "可以在浏览器中直接开始吗？",
+        foveaflow: "是的。",
+        alternative: "是的。公开页面包含简单的浏览器训练模式，同时推广 Steam 愿望清单。",
       },
       {
-        feature: "Do I need an account or install?",
-        foveaflow:
-          "No. FoveaFlow runs in the browser and stores settings locally.",
-        alternative:
-          "No account is needed for the simple browser patterns shown publicly. Steam is promoted for the upcoming app.",
+        feature: "需要账号或安装吗？",
+        foveaflow: "不需要。FoveaFlow 在浏览器中运行，设置保存在本地。",
+        alternative: "公开展示的简单浏览器模式不需要账号。Steam 版本为即将推出的应用做推广。",
       },
       {
-        feature: "Which drills are available?",
-        foveaflow:
-          "Smooth Pursuit, Reaction Jumps, Multiple Distractions, and Lilac Chaser are available as separate modes.",
-        alternative:
-          "EyeTrainer.gg provides simple pattern options, including patterns such as Vertical Waves.",
+        feature: "提供哪些训练模式？",
+        foveaflow: "平滑追踪、反应跳跃、多目标追踪和幻影追踪，作为独立模式提供。",
+        alternative: "EyeTrainer.gg 提供简单的路径选项，包括垂直波浪等模式。",
       },
       {
-        feature: "How much can I customize?",
-        foveaflow:
-          "Speed units, target size, shape, color, opacity, trails, paths, motion behavior, distractors, letter overlays, viewing distance, screen scale, and mode-specific controls.",
-        alternative:
-          "The public browser page keeps controls simple: Show Grid, Darkmode, and pattern selection.",
+        feature: "可以自定义多少内容？",
+        foveaflow: "速度单位、目标大小、形状、颜色、透明度、轨迹、路径、运动行为、干扰物、字母叠加、观看距离、屏幕比例和模式专属控制。",
+        alternative: "公开浏览器页面控制简单：显示网格、暗色模式和路径选择。",
       },
       {
-        feature: "Can I tune target appearance and calibration?",
-        foveaflow:
-          "Target appearance, trail display, distractor brightness, letter styling, viewing distance, and screen scale can be tuned.",
-        alternative:
-          "EyeTrainer.gg focuses the public browser tool on simple pattern practice rather than detailed target and display calibration.",
+        feature: "可以调整目标外观和校准吗？",
+        foveaflow: "目标外观、轨迹显示、干扰物亮度、字母样式、观看距离和屏幕比例均可调整。",
+        alternative: "EyeTrainer.gg 的公开浏览器工具专注于简单的路径练习，而非详细的目标和显示校准。",
       },
     ],
   },
