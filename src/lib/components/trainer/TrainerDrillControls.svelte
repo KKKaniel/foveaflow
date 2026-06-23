@@ -48,13 +48,13 @@
 </script>
 
 <Field.Field>
-  <Field.Label for="trainer-mode">Drill</Field.Label>
+  <Field.Label for="trainer-mode">训练模式</Field.Label>
   <Select.Root
     type="single"
     value={settings.presetId}
     onValueChange={handlePresetChange}
   >
-    <Select.Trigger id="trainer-mode" class="w-full" aria-label="Drill">
+    <Select.Trigger id="trainer-mode" class="w-full" aria-label="训练模式">
       {getPresetName(settings.presetId)}
     </Select.Trigger>
     <Select.Content>
@@ -74,7 +74,7 @@
 
 {#if settings.presetId === "pursuit"}
   <Field.Field>
-    <Field.Label for="trainer-pattern">Motion path</Field.Label>
+    <Field.Label for="trainer-pattern">运动路径</Field.Label>
     <Select.Root
       type="single"
       value={settings.patternId}
@@ -83,7 +83,7 @@
       <Select.Trigger
         id="trainer-pattern"
         class="w-full"
-        aria-label="Motion path"
+        aria-label="运动路径"
       >
         {getPatternName(settings.patternId)}
       </Select.Trigger>
@@ -96,7 +96,7 @@
 
 {#if !isLilacChaserMode}
   <Field.Field>
-    <Field.Label for="trainer-behavior">Motion feel</Field.Label>
+    <Field.Label for="trainer-behavior">运动手感</Field.Label>
     <Select.Root
       type="single"
       value={behaviorValue}
@@ -105,7 +105,7 @@
       <Select.Trigger
         id="trainer-behavior"
         class="w-full"
-        aria-label="Motion feel"
+        aria-label="运动手感"
       >
         {getBehaviorName(behaviorValue)}
       </Select.Trigger>
@@ -120,7 +120,7 @@
   </Field.Field>
 {:else}
   <Field.Field>
-    <Field.Label for="lilac-chaser-color">Ball color</Field.Label>
+    <Field.Label for="lilac-chaser-color">球体颜色</Field.Label>
     <Select.Root
       type="single"
       value={settings.lilacChaserBallColor}
@@ -129,7 +129,7 @@
       <Select.Trigger
         id="lilac-chaser-color"
         class="w-full"
-        aria-label="Lilac Chaser ball color"
+        aria-label="幻影追踪球颜色"
       >
         <span class="flex min-w-0 items-center gap-2">
           <svg
@@ -165,13 +165,13 @@
     </Select.Root>
   </Field.Field>
   <Field.Field>
-    {@render sliderRow("Scale", `${settings.lilacChaserScale.toFixed(2)}x`)}
+    {@render sliderRow("缩放", `${settings.lilacChaserScale.toFixed(2)}x`)}
     <Slider
       bind:value={lilacChaserScaleSliderValue, setLilacChaserScaleSliderValue}
       min={trainerSettingBounds.lilacChaserScale.min}
       max={trainerSettingBounds.lilacChaserScale.max}
       step={0.05}
-      aria-label="Lilac Chaser scale"
+      aria-label="幻影追踪缩放"
     />
   </Field.Field>
 {/if}
