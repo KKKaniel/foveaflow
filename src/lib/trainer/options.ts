@@ -27,50 +27,50 @@ export type ControlSection = {
 };
 
 export const guideUseCasesByMode: Record<TrainingMode, readonly string[]> = {
-  pursuit: ["Visual tracking", "Gamer warm-up", "Screen-work reset"],
-  reactionTime: ["Quick refocus", "Target acquisition", "Reaction warm-up"],
-  mot: ["Selective attention", "Visual clutter", "Game awareness"],
-  lilacChaser: ["Steady fixation", "Peripheral awareness", "Screen reset"],
+  pursuit: ["视觉追踪", "游戏热身", "屏幕疲劳恢复"],
+  reactionTime: ["快速重新对焦", "目标捕捉", "反应热身"],
+  mot: ["选择性注意力", "视觉干扰训练", "游戏感知"],
+  lilacChaser: ["稳定注视", "周边视野感知", "屏幕疲劳重置"],
 };
 
 export const homepageGuideUseCases = [
-  "FPS warmup",
-  "Screen break",
-  "Visual practice",
+  "FPS 热身",
+  "护眼休息",
+  "视觉训练",
 ] as const;
 
 const controlSections = [
   {
     id: "session",
-    label: "Session",
+    label: "训练会话",
     icon: "theme",
   },
   {
     id: "drill",
-    label: "Drill",
+    label: "训练模式",
     icon: "target",
   },
   {
     id: "targets",
-    label: "Targets",
+    label: "目标设置",
     icon: "eye",
     hideInLilacChaser: true,
   },
   {
     id: "motion",
-    label: "Motion",
+    label: "运动控制",
     icon: "motion",
     hideInLilacChaser: true,
   },
   {
     id: "screen",
-    label: "Screen",
+    label: "屏幕校准",
     icon: "calibration",
     hideInLilacChaser: true,
   },
   {
     id: "defaults",
-    label: "Defaults",
+    label: "恢复默认",
     icon: "reset",
   },
 ] as const satisfies readonly ControlSection[];
@@ -99,7 +99,7 @@ export const getControlSectionLabel = (
 ) => {
   return (
     availableSections.find((section) => section.id === sectionId)?.label ??
-    "Controls"
+    "设置"
   );
 };
 
@@ -111,12 +111,12 @@ const getOptionName = (
 export const getPresetName = (id: string) => getPreset(id).name;
 
 export const shapeOptions = [
-  { id: "circle", name: "Circle" },
-  { id: "ring", name: "Ring" },
-  { id: "square", name: "Square" },
-  { id: "diamond", name: "Diamond" },
-  { id: "triangle", name: "Triangle" },
-  { id: "cross", name: "Cross" },
+  { id: "circle", name: "圆形" },
+  { id: "ring", name: "圆环" },
+  { id: "square", name: "方形" },
+  { id: "diamond", name: "菱形" },
+  { id: "triangle", name: "三角形" },
+  { id: "cross", name: "十字形" },
 ] as const satisfies ReadonlyArray<{ id: TargetShape; name: string }>;
 
 export const letterScaleByShape: Record<TargetShape, number> = {
@@ -129,11 +129,11 @@ export const letterScaleByShape: Record<TargetShape, number> = {
 };
 
 export const letterWeightOptions = [
-  { id: 400, name: "Regular" },
-  { id: 500, name: "Medium" },
-  { id: 600, name: "Semibold" },
-  { id: 700, name: "Bold" },
-  { id: 800, name: "Heavy" },
+  { id: 400, name: "常规" },
+  { id: 500, name: "中等" },
+  { id: 600, name: "半粗" },
+  { id: 700, name: "粗体" },
+  { id: 800, name: "特粗" },
 ] as const satisfies ReadonlyArray<{ id: LetterWeight; name: string }>;
 
 export const getPatternName = (id: PatternId) =>
@@ -206,11 +206,11 @@ export const predictivePatternOptions = pursuitPatternOptions.filter(
 );
 
 export const lilacChaserColorOptions = [
-  { id: "#ff00fe", name: "Magenta" },
-  { id: "#ff3030", name: "Red" },
-  { id: "#245cff", name: "Blue" },
-  { id: "#ffcc00", name: "Gold" },
-  { id: "#00d7ff", name: "Cyan" },
+  { id: "#ff00fe", name: "品红" },
+  { id: "#ff3030", name: "红色" },
+  { id: "#245cff", name: "蓝色" },
+  { id: "#ffcc00", name: "金色" },
+  { id: "#00d7ff", name: "青色" },
 ] as const;
 
 export const getLilacChaserColorName = (id: string) =>
