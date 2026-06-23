@@ -33,77 +33,95 @@ export type TrainingRecommendation = {
 
 /** 单个 2 分钟训练模块 */
 export type SessionModule = {
-  /** 模块序号（1-基） */
+  /** 模块编号，从 1 开始 */
   index: number;
   /** 模块标题 */
   label: string;
   /** 目标大小 (px) */
   baseRadiusPx: number;
-  /** 训练速度 (deg/s) */
+  /** 速度 (deg/s) */
   speedValue: number;
   speedUnit: "deg/s";
-  /** 模块时长（秒），固定 120 秒 */
+  /** 训练时长（秒），固定 120 */
   durationSec: number;
-  /** 训练类型描述 */
-  focusLabel: string;
+  /** 模块说明 */
+  description: string;
 };
 
-/** 每日训练计划 */
+/** 今日训练计划 */
 export type DailySession = {
   modules: SessionModule[];
-  totalModules: number;
-  dailyMinutes: number;
+  totalMinutes: number;
+  durationWeeks: number;
 };
 
 const MODULE_DURATION_SEC = 120; // 2 分钟
 
-const MODULE_FOCUS_LABELS = [
-  "平滑追踪",
-  "速度振荡",
-  "大小适应",
-  "高速冲刺",
-  "放松测试",
-  "综合训练",
-];
-
 /**
- * 根据推荐参数构建每日训练计划。
- * dailyMinutes 除以 2 得到模块数，每个模块在基准参数上做微小变化以增加多样性。
+ * 根据训练推荐生成今日的模块列表。
+ * 每个模块 2 分钟，共 dailyMinutes/2 个模块。
+ * 各模块在基础速度/大小基础上渐进变化：
+ *   - 模块 1：基础参数（热身）
+ *   - 模块 2：速度 +10%（提高挑战）
+ *   - 模块 3：目标缩小 15%（精度训练）
+ *   - 模块 4：速度 +10% 且目标缩小 15%（应战训练）
+ *   - 居其后按循环模式带差异重复
  */
 export const buildDailySession = (
   rec: TrainingRecommendation,
 ): DailySession => {
-  const totalModules = Math.max(1, Math.round(rec.dailyMinutes / 2));
+  const count = Math.max(1, Math.round(rec.dailyMinutes / 2));
   const modules: SessionModule[] = [];
 
-  for (let i = 0; i < totalModules; i++) {
-    // 每个模块速度微弱变化：从 -10% 到 +10%
-    const speedFactor = 1 + (i / Math.max(1, totalModules - 1) - 0.5) * 0.2;
-    const speedValue =
-      Math.round(rec.speedValue * speedFactor * 10) / 10;
+  const moduleTemplates = [
+    {
+      label: "热身模块",
+      description: "基础参数训练，帮助眼部逐渐适应运动轨迹。",
+      radiusMult: 1.0,
+      speedMult: 1.0,
+    },
+    {
+      label: "速度挑战",
+      description: "提高运动速度，增强眼部快速跟踪能力。",
+      radiusMult: 1.0,
+      speedMult: 1.1,
+    },
+    {
+      label: "精度训练",
+      description: "缩小目标，训练眼部对小目标的精确追踪能力。",
+      radiusMult: 0.85,
+      speedMult: 1.0,
+    },
+    {
+      label: "应战训练",
+      description: "高速小目标，全面提升眼部追踪应变能力。",
+      radiusMult: 0.85,
+      speedMult: 1.1,
+    },
+  ];
 
-    // 模块大小交替大/小
-    const radiusFactor = i % 2 === 0 ? 1 : 0.85;
-    const baseRadiusPx = Math.round(rec.baseRadiusPx * radiusFactor);
-
-    const focusLabel =
-      MODULE_FOCUS_LABELS[i % MODULE_FOCUS_LABELS.length];
+  for (let i = 0; i < count; i++) {
+    const tpl = moduleTemplates[i % moduleTemplates.length];
+    // 连续循环时给予少许差异避免完全重复
+    const cycleBonus = Math.floor(i / moduleTemplates.length);
+    const speedBonus = cycleBonus * 0.5;
 
     modules.push({
       index: i + 1,
-      label: `第 ${i + 1} 组`,
-      baseRadiusPx,
-      speedValue,
+      label: tpl.label,
+      baseRadiusPx: Math.round(rec.baseRadiusPx * tpl.radiusMult),
+      speedValue:
+        Math.round((rec.speedValue * tpl.speedMult + speedBonus) * 10) / 10,
       speedUnit: "deg/s",
       durationSec: MODULE_DURATION_SEC,
-      focusLabel,
+      description: tpl.description,
     });
   }
 
   return {
     modules,
-    totalModules,
-    dailyMinutes: rec.dailyMinutes,
+    totalMinutes: rec.dailyMinutes,
+    durationWeeks: rec.durationWeeks,
   };
 };
 

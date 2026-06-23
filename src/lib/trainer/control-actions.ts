@@ -7,7 +7,7 @@ import type {
   CalibrationField,
   TrainerSliderValue,
 } from "$lib/trainer/settings";
-import type { TrainingRecommendation, SessionModule } from "$lib/vision/prescription";
+import type { TrainingRecommendation, DailySession, SessionModule } from "$lib/vision/prescription";
 
 type SliderBinding = {
   value: () => number[];
@@ -29,8 +29,8 @@ export type TrainerHudActions = {
   toggleMotionDirection: () => void;
   revealHud: () => void;
   openControlsPanel: () => void;
-  /** 启动一个训练 session，传入当日模块列表 */
-  startSession: (modules: SessionModule[]) => void;
+  /** 启动今日训练计划 */
+  startDailySession: (session: DailySession) => void;
 };
 
 export type TrainerDialogActions = {
@@ -72,3 +72,10 @@ export type TrainerDialogState = {
   isLilacChaserMode: boolean;
   behaviorValue: BehaviorId;
 };
+
+/** session 全局状态 */
+export type TrainingSessionState =
+  | { status: "idle" }
+  | { status: "running"; session: DailySession; moduleIndex: number; remainingSec: number }
+  | { status: "module-done"; session: DailySession; moduleIndex: number }
+  | { status: "session-done"; session: DailySession };
