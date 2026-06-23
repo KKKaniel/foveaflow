@@ -150,23 +150,7 @@
             class="flex shrink-0 items-center gap-2 rounded-2xl outline-hidden transition-colors hover:text-foreground/85 focus-visible:ring-3 focus-visible:ring-ring/30"
             aria-label={`${siteMetadata.name} 首页`}
           >
-            <img
-              src="/metadata/favicon-96x96.png"
-              alt=""
-              aria-hidden="true"
-              width="28"
-              height="28"
-              class="size-7 object-contain dark:hidden"
-            />
-            <img
-              src="/metadata/favicon-light-96x96.png"
-              alt=""
-              aria-hidden="true"
-              width="28"
-              height="28"
-              class="hidden size-7 object-contain dark:block"
-            />
-            <span class="sr-only xl:not-sr-only">{siteMetadata.name}</span>
+            <span>{siteMetadata.name}</span>
           </a>
         </svelte:element>
       </div>
@@ -454,6 +438,7 @@
           variant="outline"
           size="icon"
           aria-label="打开设置"
+          popovertarget="trainer-controls-panel"
           onclick={actions.openControlsPanel}
         >
           <SettingsIcon />
