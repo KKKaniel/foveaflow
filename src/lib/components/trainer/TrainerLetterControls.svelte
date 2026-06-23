@@ -34,16 +34,16 @@
 </script>
 
 <div class="flex min-h-12 items-center justify-between gap-4">
-  <span class="text-base font-medium">Letter</span>
+  <span class="text-base font-medium">字母</span>
   <Switch
     bind:checked={settings.letterEnabled}
-    aria-label="Show target letters"
+    aria-label="显示目标字母"
   />
 </div>
 
 {#if settings.letterEnabled}
   <Field.Field>
-    <Field.Label for="trainer-letter-color">Letter color</Field.Label>
+    <Field.Label for="trainer-letter-color">字母颜色</Field.Label>
     <label
       class="flex h-11 min-w-0 cursor-pointer items-center gap-3 rounded-full border bg-input/50 px-3 transition-[color,box-shadow,background-color] hover:ring-4 hover:ring-ring/30"
       for="trainer-letter-color"
@@ -77,13 +77,13 @@
         type="color"
         value={settings.letterColor}
         oninput={handleLetterColorInput}
-        aria-label="Letter color"
+        aria-label="字母颜色"
       />
     </label>
   </Field.Field>
 
   <Field.Field>
-    <Field.Label for="trainer-letter-weight">Weight</Field.Label>
+    <Field.Label for="trainer-letter-weight">字重</Field.Label>
     <Select.Root
       type="single"
       value={String(settings.letterWeight)}
@@ -92,7 +92,7 @@
       <Select.Trigger
         id="trainer-letter-weight"
         class="w-full"
-        aria-label="Letter weight"
+        aria-label="字母字重"
       >
         {getLetterWeightName(settings.letterWeight)}
       </Select.Trigger>
@@ -108,7 +108,7 @@
 
   <Field.Field>
     {@render sliderRow(
-      "Text size",
+      "字母大小",
       `${Math.round(settings.letterScale * 100)}%`,
     )}
     <Slider
@@ -116,7 +116,7 @@
       min={trainerSettingBounds.letterScale.min}
       max={trainerSettingBounds.letterScale.max}
       step={0.01}
-      aria-label="Letter text size"
+      aria-label="字母大小"
     />
   </Field.Field>
 {/if}

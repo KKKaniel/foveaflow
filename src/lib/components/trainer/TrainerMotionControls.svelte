@@ -28,7 +28,7 @@
 
 <Field.Field>
   {@render sliderRow(
-    "Speed",
+    "速度",
     `${settings.speed.value.toFixed(1)} ${settings.speed.unit}`,
   )}
   <Slider
@@ -36,12 +36,12 @@
     min={trainerSettingBounds.speedValue.min}
     max={maxSpeedByUnit[settings.speed.unit]}
     step={speedStepByUnit[settings.speed.unit]}
-    aria-label="Speed"
+    aria-label="速度"
   />
 </Field.Field>
 
 <Field.Field>
-  <Field.Label for="trainer-speed-unit">Unit</Field.Label>
+  <Field.Label for="trainer-speed-unit">单位</Field.Label>
   <Select.Root
     type="single"
     value={settings.speed.unit}
@@ -50,7 +50,7 @@
     <Select.Trigger
       id="trainer-speed-unit"
       class="w-full"
-      aria-label="Speed unit"
+      aria-label="速度单位"
     >
       {settings.speed.unit}
     </Select.Trigger>

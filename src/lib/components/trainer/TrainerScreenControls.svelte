@@ -26,7 +26,7 @@
 
 <div class="grid gap-3 sm:grid-cols-2">
   <Field.Field>
-    <Field.Label for="trainer-distance">Viewing distance</Field.Label>
+    <Field.Label for="trainer-distance">观看距离</Field.Label>
     <Input
       id="trainer-distance"
       type="number"
@@ -37,7 +37,7 @@
     />
   </Field.Field>
   <Field.Field>
-    <Field.Label for="trainer-css-px-cm">CSS pixels/cm</Field.Label>
+    <Field.Label for="trainer-css-px-cm">CSS 像素/厘米</Field.Label>
     <Input
       id="trainer-css-px-cm"
       type="number"
@@ -50,11 +50,11 @@
   </Field.Field>
 </div>
 <div class="flex min-h-12 items-center justify-between gap-4">
-  <span class="text-base font-medium">Show trail</span>
+  <span class="text-base font-medium">显示轨迹</span>
   <Switch
     checked={settings.showTrail && canToggleDirection}
     onCheckedChange={handleShowTrailChange}
     disabled={!canToggleDirection}
-    aria-label="Show trail"
+    aria-label="显示轨迹"
   />
 </div>

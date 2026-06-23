@@ -8,7 +8,7 @@
 </script>
 
 <Select.Group>
-  <Select.GroupHeading>Unpredictive</Select.GroupHeading>
+  <Select.GroupHeading>非规律性</Select.GroupHeading>
   {#each unpredictivePatternOptions as option (option.id)}
     <Select.Item value={option.id}>
       <span class="flex min-w-0 items-center gap-2">
@@ -19,7 +19,7 @@
   {/each}
 </Select.Group>
 <Select.Group>
-  <Select.GroupHeading>Predictive</Select.GroupHeading>
+  <Select.GroupHeading>规律性</Select.GroupHeading>
   {#each predictivePatternOptions as option (option.id)}
     <Select.Item value={option.id}>
       <span class="flex min-w-0 items-center gap-2">

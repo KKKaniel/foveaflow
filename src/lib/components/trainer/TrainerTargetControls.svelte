@@ -61,23 +61,23 @@
 {#if isMotMode}
   <div class="space-y-4">
     <Field.Field>
-      {@render sliderRow("Targets", String(settings.targetCount))}
+      {@render sliderRow("目标数量", String(settings.targetCount))}
       <Slider
         bind:value={targetCountSliderValue, setTargetCountSliderValue}
         min={trainerSettingBounds.targetCount.min}
         max={trainerSettingBounds.targetCount.max}
         step={1}
-        aria-label="Targets"
+        aria-label="目标数量"
       />
     </Field.Field>
     <Field.Field>
-      {@render sliderRow("Distractors", String(settings.distractorCount))}
+      {@render sliderRow("干扰项数量", String(settings.distractorCount))}
       <Slider
         bind:value={distractorCountSliderValue, setDistractorCountSliderValue}
         min={trainerSettingBounds.distractorCount.min}
         max={trainerSettingBounds.distractorCount.max}
         step={1}
-        aria-label="Distractors"
+        aria-label="干扰项数量"
       />
     </Field.Field>
   </div>
@@ -104,7 +104,7 @@
       type="color"
       value={settings.ballColor}
       oninput={handleColorInput}
-      aria-label="Ball color"
+      aria-label="球体颜色"
     />
   </label>
 </Field.Field>
@@ -112,7 +112,7 @@
 {#if isMotMode}
   <Field.Field>
     {@render sliderRow(
-      "Distractor color",
+      "干扰项颜色",
       `${Math.round(settings.distractorBrightness * 100)}%`,
     )}
     <Slider
@@ -122,30 +122,30 @@
       min={trainerSettingBounds.distractorBrightness.min}
       max={trainerSettingBounds.distractorBrightness.max}
       step={0.01}
-      aria-label="Distractor color brightness"
+      aria-label="干扰项亮度"
     />
   </Field.Field>
 {/if}
 
 <Field.Field>
-  {@render sliderRow("Opacity", `${Math.round(settings.targetOpacity * 100)}%`)}
+  {@render sliderRow("透明度", `${Math.round(settings.targetOpacity * 100)}%`)}
   <Slider
     bind:value={opacitySliderValue, setOpacitySliderValue}
     min={trainerSettingBounds.targetOpacity.min}
     max={trainerSettingBounds.targetOpacity.max}
     step={0.01}
-    aria-label="Target opacity"
+    aria-label="目标透明度"
   />
 </Field.Field>
 
 <Field.Field>
-  <Field.Label for="trainer-shape">Shape</Field.Label>
+  <Field.Label for="trainer-shape">形状</Field.Label>
   <Select.Root
     type="single"
     value={settings.targetShape}
     onValueChange={handleShapeChange}
   >
-    <Select.Trigger id="trainer-shape" class="w-full" aria-label="Shape">
+    <Select.Trigger id="trainer-shape" class="w-full" aria-label="形状">
       {getShapeName(settings.targetShape)}
     </Select.Trigger>
     <Select.Content>
@@ -159,13 +159,13 @@
 </Field.Field>
 
 <Field.Field>
-  {@render sliderRow("Size", `${Math.round(settings.baseRadiusPx)} px`)}
+  {@render sliderRow("大小", `${Math.round(settings.baseRadiusPx)} px`)}
   <Slider
     bind:value={sizeSliderValue, setSizeSliderValue}
     min={trainerSettingBounds.baseRadiusPx.min}
     max={trainerSettingBounds.baseRadiusPx.max}
     step={1}
-    aria-label="Target size"
+    aria-label="目标大小"
   />
 </Field.Field>
 

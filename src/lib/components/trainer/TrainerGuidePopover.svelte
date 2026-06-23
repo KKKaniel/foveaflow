@@ -42,12 +42,12 @@
     variant="ghost"
     class="absolute top-4 right-4 bg-secondary"
     size="icon-sm"
-    aria-label="Close"
+    aria-label="关闭"
     popovertarget="trainer-guide-popover"
     popovertargetaction="hide"
   >
     <XIcon />
-    <span class="sr-only">Close</span>
+    <span class="sr-only">关闭</span>
   </Button>
 {/snippet}
 
@@ -56,8 +56,7 @@
     class="guide-enter guide-enter-delay-4 mt-8 flex flex-col gap-4 border-t border-border/40 pt-4 sm:flex-row sm:items-center sm:justify-between"
   >
     <p class="min-w-0 text-xs leading-5 text-muted-foreground">
-      {siteMetadata.name} is free to use, requires no account or install, and stores
-      settings locally in your browser.
+      {siteMetadata.name} 免费使用，无需注册或安装，设置信息本地存储在您的浏览器中。
     </p>
 
     <div class="flex shrink-0 flex-wrap gap-2 sm:justify-end">
@@ -69,7 +68,7 @@
         size="xs"
       >
         <ExternalLinkIcon class="size-3" />
-        <span class="pl-1">Source</span>
+        <span class="pl-1">源代码</span>
       </Button>
       <Button href={legalPageLinks.privacy.path} variant="ghost" size="xs">
         <ShieldCheckIcon class="size-3" />
@@ -107,9 +106,9 @@
   >
     <section
       class="guide-enter guide-enter-delay-1 space-y-5 border-t border-border/40 pt-6"
-      aria-label="FoveaFlow overview"
+      aria-label="FoveaFlow 概览"
     >
-      <h3 class="text-base font-semibold text-foreground">Overview</h3>
+      <h3 class="text-base font-semibold text-foreground">概览</h3>
 
       <div
         class="mt-6 space-y-4 text-sm leading-6 text-muted-foreground text-pretty sm:text-[0.95rem] sm:leading-7"
@@ -128,7 +127,7 @@
         id="homepage-guide-drills"
         class="text-base font-semibold text-foreground"
       >
-        Drills
+        训练模式
       </h3>
       <ul class="mt-6 grid gap-5">
         {#each trainingModeNotes as trainingModeNote (trainingModeNote.title)}
@@ -153,14 +152,14 @@
     <aside
       class="guide-enter guide-enter-delay-3 border-t border-border/40 pt-6"
     >
-      <h3 class="text-base font-semibold text-foreground">Safety</h3>
+      <h3 class="text-base font-semibold text-foreground">安全提示</h3>
       <p class="mt-6 text-sm leading-6 text-muted-foreground text-pretty">
         {homepageSeoContent.trustNote}
       </p>
 
       <div
         class="mt-6 flex flex-wrap gap-2"
-        aria-label={`Best uses for ${siteMetadata.name}`}
+        aria-label={`${siteMetadata.name} 最佳适用场景`}
       >
         {#each guideUseCases as useCase (useCase)}
           <span
@@ -176,7 +175,7 @@
         class={`${buttonVariants({ variant: "default", size: "lg" })} pressable-ui guide-enter guide-enter-delay-4 mt-6 w-full`}
       >
         <BookOpenIcon class="size-4" />
-        <span>Read the full guide</span>
+        <span>阅读完整指南</span>
       </a>
     </aside>
   </div>
@@ -209,9 +208,9 @@
   >
     <section
       class="guide-enter guide-enter-delay-1 space-y-6 border-t border-border/40 pt-6"
-      aria-label={`${guideSeoContent.heading} overview`}
+      aria-label={`${guideSeoContent.heading} 概览`}
     >
-      <h3 class="text-base font-semibold text-foreground">Overview</h3>
+      <h3 class="text-base font-semibold text-foreground">概览</h3>
 
       <div
         class="mt-6 space-y-4 text-sm leading-6 text-muted-foreground text-pretty sm:text-[0.95rem] sm:leading-7"
@@ -225,7 +224,7 @@
 
       <Button href="/guide/" size="xl" class="pressable-ui w-full">
         <BookOpenIcon class="size-5" />
-        <span class="pl-1">Read full guide</span>
+        <span class="pl-1">阅读完整指南</span>
       </Button>
     </section>
 
@@ -237,7 +236,7 @@
         id="trainer-guide-steps"
         class="text-base font-semibold text-foreground text-balance"
       >
-        How to use {activeTrainingModeGuide.title}
+        如何使用 {activeTrainingModeGuide.title}
       </h3>
 
       <ol class="mt-6 grid gap-5">
@@ -259,7 +258,7 @@
       <p
         class="mt-6 border-t border-border/40 pt-6 text-sm leading-6 text-muted-foreground text-pretty"
       >
-        <span class="font-semibold text-foreground">What it trains:</span>
+        <span class="font-semibold text-foreground">训练目标：</span>
         {activeTrainingModeGuide.benefits}
       </p>
     </section>
@@ -272,7 +271,7 @@
         id="trainer-guide-faq"
         class="text-base font-semibold text-foreground text-balance"
       >
-        Quick answers
+        快速解答
       </h3>
 
       <div class="mt-6 divide-y divide-border/40">
@@ -321,7 +320,7 @@
 
       <div
         class="mt-6 flex flex-wrap gap-2"
-        aria-label={`Best uses for ${activeTrainingModeGuide.title}`}
+        aria-label={`${activeTrainingModeGuide.title} 最佳适用场景`}
       >
         {#each guideUseCases as useCase (useCase)}
           <span

@@ -38,7 +38,7 @@
       {:else}
         <PauseIcon class="size-5 shrink-0 text-accent" />
       {/if}
-      <span class="truncate text-base font-medium">Motion</span>
+      <span class="truncate text-base font-medium">运动</span>
     </div>
     <Button
       class="pressable-ui"
@@ -48,14 +48,14 @@
       aria-describedby="trainer-motion-status"
       onclick={toggleMotionPaused}
     >
-      {motionPaused ? "Resume" : "Pause"}
+      {motionPaused ? "继续" : "暂停"}
     </Button>
   </div>
 
   <div class="flex min-h-12 items-center justify-between gap-4">
     <div class="flex min-w-0 items-center gap-3">
       <ArrowLeftRightIcon class="size-5 shrink-0 text-accent" />
-      <span class="truncate text-base font-medium">Direction</span>
+      <span class="truncate text-base font-medium">方向</span>
     </div>
     <Button
       class="pressable-ui"
@@ -77,12 +77,12 @@
       {:else}
         <SunIcon class="size-5 shrink-0 text-accent" />
       {/if}
-      <span class="truncate text-base font-medium">Dark mode</span>
+      <span class="truncate text-base font-medium">深色模式</span>
     </div>
     <Switch
       checked={isDarkMode}
       onCheckedChange={handleThemeCheckedChange}
-      aria-label="Use dark theme"
+      aria-label="切换深色主题"
     />
   </div>
 </div>
