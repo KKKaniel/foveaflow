@@ -700,9 +700,6 @@
     syncBrowserPath();
   };
 
-  /**
-   * 应用视力匹配推荐：直接写入 baseRadiusPx 和 speed，并重刷画布。
-   */
   const applyRecommendation = (rec: TrainingRecommendation) => {
     settings.baseRadiusPx = rec.baseRadiusPx;
     settings.speed = { value: rec.speedValue, unit: rec.speedUnit };
@@ -1017,7 +1014,7 @@
     toggleMotionPaused,
     toggleMotionDirection,
     resetSettings,
-    applyRecommendation,   // ← 新增：视力匹配连线
+    applyRecommendation,
   };
 
   $effect(() => {
@@ -1103,15 +1100,6 @@
   <TrainerControlsDialog
     bind:open={panelOpen}
     bind:settings
-    {availableControlSections}
-    {currentControlSection}
-    {currentControlSectionLabel}
-    {motionPaused}
-    {motionDirectionLabel}
-    {canToggleDirection}
-    {colorMode}
-    {isDarkMode}
-    {isMotMode}
     {isLilacChaserMode}
     {behaviorValue}
     {patternSelectContentClass}
