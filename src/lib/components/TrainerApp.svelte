@@ -6,6 +6,7 @@
   import TrainerControlsDialog from "$lib/components/trainer/TrainerControlsDialog.svelte";
   import TrainerGuidePopover from "$lib/components/trainer/TrainerGuidePopover.svelte";
   import TrainerHud from "$lib/components/trainer/TrainerHud.svelte";
+  import TrainingSessionOverlay from "$lib/components/trainer/TrainingSessionOverlay.svelte";
   import {
     DEFAULT_CALIBRATION,
     speedToPixelsPerSecond,
@@ -59,6 +60,7 @@
   import type {
     TrainerDialogActions,
     TrainerHudActions,
+    TrainingSessionState,
   } from "$lib/trainer/control-actions";
   import {
     advanceMotionTick,
@@ -113,7 +115,7 @@
     type CanvasTheme,
   } from "$lib/trainer/rendering";
   import { createHudControlTransition } from "$lib/trainer/transitions";
-  import type { TrainingRecommendation } from "$lib/vision/prescription";
+  import type { TrainingRecommendation, DailySession } from "$lib/vision/prescription";
 
   let { routeSlug = "" }: { routeSlug?: string } = $props();
 
@@ -166,6 +168,10 @@
   let desktopPresetSelectOpen = $state(false);
   let desktopPatternSelectOpen = $state(false);
   let desktopLilacChaserColorSelectOpen = $state(false);
+
+  // 训练 session 状态
+  let sessionState = $state<TrainingSessionState>({ status: "idle" });
+
   let headerPresetSelectOpen = $derived(
     mobilePresetSelectOpen || desktopPresetSelectOpen,
   );
@@ -178,7 +184,6 @@
   let colorMode = $derived.by<CanvasColorMode>(() => {
     const nextMode = mode.current;
     if (nextMode === "light" || nextMode === "dark") return nextMode;
-
     return typeof document !== "undefined" &&
       !document.documentElement.classList.contains("dark")
       ? "light"
@@ -256,19 +261,13 @@
   );
   const hudAutoHideTimer = createHudAutoHideTimer({
     delayMs: hudAutoHideDelayMs,
-    setReady: (ready) => {
-      hudAutoHideReady = ready;
-    },
-    setVisible: (visible) => {
-      hudVisible = visible;
-    },
+    setReady: (ready) => { hudAutoHideReady = ready; },
+    setVisible: (visible) => { hudVisible = visible; },
     isInteractionOpen: () => hudInteractionOpen,
   });
   const cursorAutoHideTimer = createCursorAutoHideTimer({
     delayMs: cursorHideDelayMs,
-    setHidden: (hidden) => {
-      cursorHidden = hidden;
-    },
+    setHidden: (hidden) => { cursorHidden = hidden; },
   });
   let hudShell: HTMLDivElement | undefined;
   const settingsSaver = createDebouncedSettingsSaver();
@@ -281,14 +280,11 @@
   const attachCanvas: Attachment<HTMLCanvasElement> = (node) => {
     canvas = node;
     context = node.getContext("2d", { alpha: false, desynchronized: true });
-
     const resizeObserver = new ResizeObserver(resizeCanvas);
     resizeObserver.observe(node);
-
     canvasTheme = getCanvasTheme(node, colorMode);
     resizeCanvas();
     if (shouldAnimateMotion()) startLoop();
-
     return () => {
       cancelAnimationFrame(motionFrame);
       resizeObserver.disconnect();
@@ -308,29 +304,22 @@
     drawFrame({ clearTrail: true });
   };
 
-  const flushSettings = () => {
-    settingsSaver.flush();
-  };
+  const flushSettings = () => { settingsSaver.flush(); };
 
   onMount(() => {
     const savedSettings = loadSettings();
     syncSettingsFromBrowserRoute(
       savedSettings ? resolveStoredSettings(savedSettings) : settings,
     );
-
     storageReady = true;
     hudAutoHideTimer.start();
     cursorAutoHideTimer.start();
-
-    const reduceMotionQuery = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    );
+    const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (reduceMotionQuery.matches) setMotionPaused(true);
     const handleReduceMotionChange = (event: MediaQueryListEvent) => {
       if (event.matches) setMotionPaused(true);
     };
     reduceMotionQuery.addEventListener("change", handleReduceMotionChange);
-
     return () => {
       settingsSaver.flush();
       hudAutoHideTimer.clear();
@@ -340,7 +329,6 @@
   });
 
   const speedSliderValue = () => [settings.speed.value];
-
   const hudControlTransition = createHudControlTransition(
     () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
   );
@@ -349,12 +337,9 @@
     const updateWidth = () => {
       hudContentWidth = Math.ceil(node.getBoundingClientRect().width);
     };
-
     const resizeObserver = new ResizeObserver(updateWidth);
     const measurementFrame = requestAnimationFrame(updateWidth);
-
     resizeObserver.observe(node);
-
     return () => {
       cancelAnimationFrame(measurementFrame);
       resizeObserver.disconnect();
@@ -369,10 +354,8 @@
     };
     const resizeObserver = new ResizeObserver(updateBounds);
     const measurementFrame = requestAnimationFrame(updateBounds);
-
     resizeObserver.observe(node);
     window.addEventListener("resize", updateBounds);
-
     return () => {
       if (hudShell === node) hudShell = undefined;
       if (!hudShell) hudBounds = null;
@@ -403,16 +386,11 @@
   const setSpeedSliderValue = (value: TrainerSliderValue) => {
     const next = resolveSpeedSliderValue(value, settings.speed.unit);
     if (next === null) return;
-
-    settings.speed = {
-      ...settings.speed,
-      value: next,
-    };
+    settings.speed = { ...settings.speed, value: next };
     refreshBaseSpeed();
   };
 
   const sizeSliderValue = () => [settings.baseRadiusPx];
-
   const setSizeSliderValue = (value: TrainerSliderValue) => {
     applySliderNumber(value, trainerSettingBounds.baseRadiusPx, (next) => {
       settings.baseRadiusPx = next;
@@ -420,7 +398,6 @@
   };
 
   const lilacChaserScaleSliderValue = () => [settings.lilacChaserScale];
-
   const setLilacChaserScaleSliderValue = (value: TrainerSliderValue) => {
     applySliderNumber(value, trainerSettingBounds.lilacChaserScale, (next) => {
       settings.lilacChaserScale = next;
@@ -430,7 +407,6 @@
   };
 
   const opacitySliderValue = () => [settings.targetOpacity];
-
   const setOpacitySliderValue = (value: TrainerSliderValue) => {
     applySliderNumber(value, trainerSettingBounds.targetOpacity, (next) => {
       settings.targetOpacity = next;
@@ -438,7 +414,6 @@
   };
 
   const targetCountSliderValue = () => [settings.targetCount];
-
   const setTargetCountSliderValue = (value: TrainerSliderValue) => {
     applySliderInteger(value, trainerSettingBounds.targetCount, (next) => {
       settings.targetCount = next;
@@ -446,7 +421,6 @@
   };
 
   const distractorCountSliderValue = () => [settings.distractorCount];
-
   const setDistractorCountSliderValue = (value: TrainerSliderValue) => {
     applySliderInteger(value, trainerSettingBounds.distractorCount, (next) => {
       settings.distractorCount = next;
@@ -454,19 +428,13 @@
   };
 
   const distractorBrightnessSliderValue = () => [settings.distractorBrightness];
-
   const setDistractorBrightnessSliderValue = (value: TrainerSliderValue) => {
-    applySliderNumber(
-      value,
-      trainerSettingBounds.distractorBrightness,
-      (next) => {
-        settings.distractorBrightness = next;
-      },
-    );
+    applySliderNumber(value, trainerSettingBounds.distractorBrightness, (next) => {
+      settings.distractorBrightness = next;
+    });
   };
 
   const letterScaleSliderValue = () => [settings.letterScale];
-
   const setLetterScaleSliderValue = (value: TrainerSliderValue) => {
     applySliderNumber(value, trainerSettingBounds.letterScale, (next) => {
       settings.letterScale = next;
@@ -477,22 +445,13 @@
     if (!context) return;
     const observedRect = entries?.[0]?.contentRect;
     const rect = observedRect ?? canvas.getBoundingClientRect();
-    const layout = resolveCanvasLayout(
-      rect.width,
-      rect.height,
-      window.devicePixelRatio,
-    );
+    const layout = resolveCanvasLayout(rect.width, rect.height, window.devicePixelRatio);
     const nextArena = layout.arena;
-    const arenaChanged =
-      nextArena.width !== arena.width || nextArena.height !== arena.height;
+    const arenaChanged = nextArena.width !== arena.width || nextArena.height !== arena.height;
     arena = nextArena;
-    const backingStoreChanged =
-      canvas.width !== layout.canvasWidth ||
-      canvas.height !== layout.canvasHeight;
+    const backingStoreChanged = canvas.width !== layout.canvasWidth || canvas.height !== layout.canvasHeight;
     if (canvas.width !== layout.canvasWidth) canvas.width = layout.canvasWidth;
-    if (canvas.height !== layout.canvasHeight) {
-      canvas.height = layout.canvasHeight;
-    }
+    if (canvas.height !== layout.canvasHeight) canvas.height = layout.canvasHeight;
     if (backingStoreChanged || canvasScale !== layout.scale) {
       canvasScale = layout.scale;
       context.setTransform(layout.scale, 0, 0, layout.scale, 0, 0);
@@ -505,18 +464,13 @@
     drawFrame();
   };
 
-  const rebuildGridPath = () => {
-    gridPath = createGuideGridPath(arena);
-  };
-
+  const rebuildGridPath = () => { gridPath = createGuideGridPath(arena); };
   const shouldAnimateMotion = () => !motionPaused && !document.hidden;
-
   const stopLoop = () => {
     cancelAnimationFrame(motionFrame);
     motionFrame = 0;
     lastTimestamp = 0;
   };
-
   const startLoop = () => {
     if (!shouldAnimateMotion()) return;
     stopLoop();
@@ -524,22 +478,10 @@
   };
 
   const tick = (timestamp: number) => {
-    if (!shouldAnimateMotion()) {
-      stopLoop();
-      return;
-    }
-
+    if (!shouldAnimateMotion()) { stopLoop(); return; }
     currentSpeedPxPerSec = getSpeedPxPerSec(elapsedSec);
     const nextMotion = advanceMotionTick(
-      {
-        timestamp,
-        lastTimestamp,
-        elapsedSec,
-        travelPx,
-        speedPxPerSec: currentSpeedPxPerSec,
-        canToggleDirection,
-        motionDirection: settings.motionDirection,
-      },
+      { timestamp, lastTimestamp, elapsedSec, travelPx, speedPxPerSec: currentSpeedPxPerSec, canToggleDirection, motionDirection: settings.motionDirection },
       motionTickResult,
     );
     lastTimestamp = nextMotion.lastTimestamp;
@@ -551,25 +493,13 @@
 
   const setMotionPaused = (paused: boolean) => {
     motionPaused = paused;
-    if (paused) {
-      stopLoop();
-      drawFrame();
-      return;
-    }
+    if (paused) { stopLoop(); drawFrame(); return; }
     startLoop();
   };
-
-  const toggleMotionPaused = () => {
-    setMotionPaused(!motionPaused);
-  };
+  const toggleMotionPaused = () => { setMotionPaused(!motionPaused); };
 
   const resetDirectionForFixedPatterns = (patternId: PatternId) => {
-    const directionState = resetUnsupportedMotionDirection(
-      patternId,
-      settings.motionDirection,
-      travelPx,
-    );
-
+    const directionState = resetUnsupportedMotionDirection(patternId, settings.motionDirection, travelPx);
     settings.motionDirection = directionState.motionDirection;
     travelPx = directionState.travelPx;
   };
@@ -580,86 +510,38 @@
     drawFrame();
   };
 
-  const getSpeedPxPerSec = (timeSec: number) => {
-    return sampleSpeedProfile(
-      settings.speedProfile,
-      timeSec,
-      baseSpeedPxPerSec,
-    );
-  };
+  const getSpeedPxPerSec = (timeSec: number) =>
+    sampleSpeedProfile(settings.speedProfile, timeSec, baseSpeedPxPerSec);
 
   const drawFrame = ({ clearTrail = false } = {}) => {
     if (!context) return;
     const ctx = context;
-    if (isLilacChaserMode) {
-      drawCurrentLilacChaserFrame(ctx);
-      return;
-    }
-
+    if (isLilacChaserMode) { drawCurrentLilacChaserFrame(ctx); return; }
     const theme = canvasTheme ?? getCanvasTheme(canvas, colorMode);
-    const showTrail =
-      settings.showTrail && canPatternToggleDirection(settings.patternId);
+    const showTrail = settings.showTrail && canPatternToggleDirection(settings.patternId);
     ctx.fillStyle = showTrail && !clearTrail ? theme.trail : theme.background;
     ctx.fillRect(0, 0, arena.width, arena.height);
-    drawGuides(
-      ctx,
-      gridPath,
-      theme,
-      showTrail && !clearTrail ? theme.trailGrid : theme.grid,
-    );
-
+    drawGuides(ctx, gridPath, theme, showTrail && !clearTrail ? theme.trailGrid : theme.grid);
     const frameSample = frameSampler.sample({
-      settings,
-      arena,
-      elapsedSec,
-      travelPx,
-      currentSpeedPxPerSec,
-      baseSpeedPxPerSec,
-      safeBallColor,
-      distractorColor,
-      pathMarginPx,
-      rng,
-      seed,
+      settings, arena, elapsedSec, travelPx, currentSpeedPxPerSec, baseSpeedPxPerSec,
+      safeBallColor, distractorColor, pathMarginPx, rng, seed,
     });
     for (let index = 0; index < frameSample.count; index += 1) {
-      drawTargetFrame(
-        ctx,
-        frameSample.frames[index],
-        index,
-        settings,
-        frameSample.letterContext,
-      );
+      drawTargetFrame(ctx, frameSample.frames[index], index, settings, frameSample.letterContext);
     }
   };
 
-  const adjustTargetSize = (deltaPx: number) => {
-    setSizeSliderValue([settings.baseRadiusPx + deltaPx]);
-  };
-
-  const adjustSpeed = (delta: number) => {
-    setSpeedSliderValue([settings.speed.value + delta]);
-  };
-
-  const invalidateLilacChaserFrame = () => {
-    lastLilacChaserHiddenIndex = -1;
-  };
-
+  const adjustTargetSize = (deltaPx: number) => setSizeSliderValue([settings.baseRadiusPx + deltaPx]);
+  const adjustSpeed = (delta: number) => setSpeedSliderValue([settings.speed.value + delta]);
+  const invalidateLilacChaserFrame = () => { lastLilacChaserHiddenIndex = -1; };
   const shouldDrawTickFrame = () => {
     if (!isLilacChaserMode) return true;
     return getLilacChaserHiddenIndex(elapsedSec) !== lastLilacChaserHiddenIndex;
   };
-
   const drawCurrentLilacChaserFrame = (ctx: CanvasRenderingContext2D) => {
     const hiddenIndex = getLilacChaserHiddenIndex(elapsedSec);
     lastLilacChaserHiddenIndex = hiddenIndex;
-
-    drawLilacChaserFrame(
-      ctx,
-      arena,
-      settings.lilacChaserScale,
-      settings.lilacChaserBallColor,
-      hiddenIndex,
-    );
+    drawLilacChaserFrame(ctx, arena, settings.lilacChaserScale, settings.lilacChaserBallColor, hiddenIndex);
   };
 
   const applyPreset = (presetId: string) => {
@@ -670,17 +552,11 @@
     drawFrame({ clearTrail: true });
   };
 
-  const getBrowserRouteSlug = () => {
-    return getRouteSlugFromPath(window.location.pathname);
-  };
-
+  const getBrowserRouteSlug = () => getRouteSlugFromPath(window.location.pathname);
   const setBrowserPath = (path: string) => {
     currentRouteSlug = getRouteSlugFromPath(path);
-    if (window.location.pathname !== path) {
-      window.history.pushState({}, "", path);
-    }
+    if (window.location.pathname !== path) window.history.pushState({}, "", path);
   };
-
   const syncBrowserPath = () => {
     const route = getTrainerRoute(settings.presetId, settings.patternId);
     setBrowserPath(route?.path ?? "/");
@@ -691,9 +567,7 @@
     seed = createSessionSeed();
     rng = createRng(seed);
     frameSampler.reset();
-    elapsedSec = 0;
-    travelPx = 0;
-    currentSpeedPxPerSec = 0;
+    elapsedSec = 0; travelPx = 0; currentSpeedPxPerSec = 0;
     refreshBaseSpeed();
     invalidateLilacChaserFrame();
     drawFrame({ clearTrail: true });
@@ -707,57 +581,81 @@
     drawFrame({ clearTrail: true });
   };
 
+  // ---- Session 管理 ----
+  const applyModuleSettings = (session: DailySession, moduleIndex: number) => {
+    const mod = session.modules[moduleIndex];
+    if (!mod) return;
+    settings.baseRadiusPx = mod.baseRadiusPx;
+    settings.speed = { value: mod.speedValue, unit: mod.speedUnit };
+    refreshBaseSpeed();
+    drawFrame({ clearTrail: true });
+  };
+
+  const startDailySession = (session: DailySession) => {
+    applyModuleSettings(session, 0);
+    sessionState = { status: "running", session, moduleIndex: 0, remainingSec: 120 };
+    setMotionPaused(false);
+  };
+
+  const handleModuleTick = (remainingSec: number) => {
+    if (sessionState.status !== "running") return;
+    sessionState = { ...sessionState, remainingSec };
+  };
+
+  const handleModuleDone = () => {
+    if (sessionState.status !== "running") return;
+    setMotionPaused(true);
+    sessionState = { status: "module-done", session: sessionState.session, moduleIndex: sessionState.moduleIndex };
+  };
+
+  const handleNextModule = () => {
+    if (sessionState.status !== "module-done") return;
+    const nextIndex = sessionState.moduleIndex + 1;
+    const session = sessionState.session;
+    if (nextIndex >= session.modules.length) {
+      sessionState = { status: "session-done", session };
+      return;
+    }
+    applyModuleSettings(session, nextIndex);
+    sessionState = { status: "running", session, moduleIndex: nextIndex, remainingSec: 120 };
+    setMotionPaused(false);
+  };
+
+  const handleSessionDone = () => {
+    if (sessionState.status !== "module-done") return;
+    sessionState = { status: "session-done", session: sessionState.session };
+    setMotionPaused(true);
+  };
+
+  const handleSessionDismiss = () => {
+    sessionState = { status: "idle" };
+  };
+  // ---- End Session 管理 ----
+
   const handleGuidePopoverToggle = (event: ToggleEvent) => {
     guidePopoverOpen = event.newState === "open";
     if (guidePopoverOpen) revealHud();
   };
-
-  const setActiveControlSection = (section: ControlSectionId) => {
-    activeControlSection = section;
-  };
-
+  const setActiveControlSection = (section: ControlSectionId) => { activeControlSection = section; };
   const toggleGuideFaq = (question: string) => {
     openGuideFaqQuestion = openGuideFaqQuestion === question ? null : question;
   };
-
-  const revealHud = () => {
-    hudVisible = true;
-  };
-
+  const revealHud = () => { hudVisible = true; };
   const hideHud = () => {
     if (!canAutoHideHud(hudAutoHideReady, hudInteractionOpen)) return;
     hudVisible = false;
   };
-
-  const handleHeaderPresetOpenChange = (open: boolean) => {
-    if (open) revealHud();
-  };
-
-  const handleHeaderPatternOpenChange = (open: boolean) => {
-    if (open) revealHud();
-  };
-
-  const handleHeaderLilacChaserColorOpenChange = (open: boolean) => {
-    if (open) revealHud();
-  };
+  const handleHeaderPresetOpenChange = (open: boolean) => { if (open) revealHud(); };
+  const handleHeaderPatternOpenChange = (open: boolean) => { if (open) revealHud(); };
+  const handleHeaderLilacChaserColorOpenChange = (open: boolean) => { if (open) revealHud(); };
 
   const handleWindowPointerMove = (event: PointerEvent) => {
     if (event.pointerType !== "touch") cursorAutoHideTimer.start();
     if (!hudAutoHideReady || event.pointerType === "touch") return;
-
     const pointerIntent = getHudPointerIntent(
-      event.pointerType,
-      hudAutoHideReady,
-      event.clientX,
-      event.clientY,
-      hudBounds,
+      event.pointerType, hudAutoHideReady, event.clientX, event.clientY, hudBounds,
     );
-
-    if (pointerIntent === "reveal") {
-      revealHud();
-      return;
-    }
-
+    if (pointerIntent === "reveal") { revealHud(); return; }
     if (pointerIntent === "hide") hideHud();
   };
 
@@ -766,172 +664,105 @@
     resetDirectionForFixedPatterns(patternId);
     drawFrame({ clearTrail: true });
   };
-
   const setSpeedUnit = (unit: SpeedUnit) => {
     settings.speed = resolveSpeedUnit(settings.speed, unit);
     refreshBaseSpeed();
   };
-
   const setBehavior = (behavior: BehaviorId) => {
     const { speedProfile, sizeProfile } = createBehaviorProfiles(behavior);
     settings.speedProfile = speedProfile;
     settings.sizeProfile = sizeProfile;
   };
-
   const handleColorInput = (event: Event) => {
     const target = event.currentTarget;
     if (!(target instanceof HTMLInputElement)) return;
     settings.ballColor = safeStimulusColor(target.value);
   };
-
   const handleLetterColorInput = (event: Event) => {
     const target = event.currentTarget;
-    if (!(target instanceof HTMLInputElement) || !isHexColor(target.value)) {
-      return;
-    }
+    if (!(target instanceof HTMLInputElement) || !isHexColor(target.value)) return;
     settings.letterColor = target.value;
   };
-
-  const patternSelectContentClass =
-    "max-h-[min(65dvh,26rem)] overscroll-contain";
-
-  const handleShapeChange = (value: string) => {
-    if (isTargetShape(value)) settings.targetShape = value;
-  };
-
+  const patternSelectContentClass = "max-h-[min(65dvh,26rem)] overscroll-contain";
+  const handleShapeChange = (value: string) => { if (isTargetShape(value)) settings.targetShape = value; };
   const handleLetterWeightChange = (value: string) => {
     const weight = Number(value);
     if (isLetterWeight(weight)) settings.letterWeight = weight;
   };
-
-  const handleThemeCheckedChange = (checked: boolean) => {
-    setMode(checked ? "dark" : "light");
-  };
-
+  const handleThemeCheckedChange = (checked: boolean) => { setMode(checked ? "dark" : "light"); };
   const openControlsPanel = () => {
     revealHud();
     activeControlSection = "targets";
     panelOpen = true;
   };
-
   const openHeaderSelectFromShortcut = (select: HeaderShortcutSelect) => {
     const useDesktopSelect = window.matchMedia(desktopHeaderQuery).matches;
     const openState = getHeaderSelectOpenState(select, useDesktopSelect);
     revealHud();
-
     mobilePresetSelectOpen = openState.mobilePresetSelectOpen;
     desktopPresetSelectOpen = openState.desktopPresetSelectOpen;
     mobilePatternSelectOpen = openState.mobilePatternSelectOpen;
     desktopPatternSelectOpen = openState.desktopPatternSelectOpen;
-    mobileLilacChaserColorSelectOpen =
-      openState.mobileLilacChaserColorSelectOpen;
-    desktopLilacChaserColorSelectOpen =
-      openState.desktopLilacChaserColorSelectOpen;
-
-    void focusHeaderSelectTriggerFromShortcut({
-      select,
-      useDesktopSelect,
-      flushSvelte,
-    });
+    mobileLilacChaserColorSelectOpen = openState.mobileLilacChaserColorSelectOpen;
+    desktopLilacChaserColorSelectOpen = openState.desktopLilacChaserColorSelectOpen;
+    void focusHeaderSelectTriggerFromShortcut({ select, useDesktopSelect, flushSvelte });
   };
-
   const openGuideDialog = () => {
     const guidePopover = document.getElementById("trainer-guide-popover");
     if (!(guidePopover instanceof HTMLElement)) return false;
-
     revealHud();
     if (guidePopover.matches(":popover-open")) return true;
-
-    if (typeof guidePopover.showPopover === "function") {
-      guidePopover.showPopover();
-      return true;
-    }
-
+    if (typeof guidePopover.showPopover === "function") { guidePopover.showPopover(); return true; }
     return false;
   };
-
   const hasPriorityKeyboardSurface = () => {
     return (
-      panelOpen ||
-      guidePopoverOpen ||
-      headerPresetSelectOpen ||
-      headerPatternSelectOpen ||
-      headerLilacChaserColorSelectOpen ||
+      panelOpen || guidePopoverOpen || headerPresetSelectOpen ||
+      headerPatternSelectOpen || headerLilacChaserColorSelectOpen ||
       Boolean(document.querySelector(shortcutPrioritySurfaceSelector))
     );
   };
-
   const runTrainerShortcut = (action: TrainerShortcutAction) => {
     return runTrainerShortcutAction(action, {
-      hasPriorityKeyboardSurface,
-      toggleMotionPaused,
-      adjustTargetSize,
-      adjustSpeed,
+      hasPriorityKeyboardSurface, toggleMotionPaused, adjustTargetSize, adjustSpeed,
       toggleTheme: () => setMode(isDarkMode ? "light" : "dark"),
       canOpenPatternSelect: () => settings.presetId === "pursuit",
       openHeaderSelect: openHeaderSelectFromShortcut,
-      openControlsPanel,
-      openGuideDialog,
+      openControlsPanel, openGuideDialog,
     });
   };
-
   const handleWindowKeydown = (event: KeyboardEvent) => {
     const action = getTrainerShortcutAction(event);
     if (!action) return;
     if (isTrainerShortcutCapturedByTarget(event.target, action)) return;
     if (!runTrainerShortcut(action)) return;
-
     event.preventDefault();
   };
-
-  const handlePresetChange = (value: string) => {
-    applyPreset(value);
-    syncBrowserPath();
-  };
-
+  const handlePresetChange = (value: string) => { applyPreset(value); syncBrowserPath(); };
   const handlePatternChange = (value: string) => {
     if (!isPatternId(value)) return;
-    setPattern(value);
-    syncBrowserPath();
+    setPattern(value); syncBrowserPath();
   };
-
-  const handleSpeedUnitChange = (value: string) => {
-    if (isSpeedUnit(value)) setSpeedUnit(value);
-  };
-
-  const handleBehaviorChange = (value: string) => {
-    if (isBehaviorId(value)) setBehavior(value);
-  };
-
+  const handleSpeedUnitChange = (value: string) => { if (isSpeedUnit(value)) setSpeedUnit(value); };
+  const handleBehaviorChange = (value: string) => { if (isBehaviorId(value)) setBehavior(value); };
   const handleLilacChaserColorChange = (value: string) => {
     if (!isLilacChaserBallColor(value)) return;
     settings.lilacChaserBallColor = value;
     invalidateLilacChaserFrame();
     if (isLilacChaserMode) drawFrame();
   };
-
   const handleCalibrationInput = (event: Event, field: CalibrationField) => {
     const target = event.currentTarget;
     if (!(target instanceof HTMLInputElement)) return;
-    const nextCalibration = updateCalibrationField(
-      settings.calibration,
-      field,
-      Number(target.value),
-    );
+    const nextCalibration = updateCalibrationField(settings.calibration, field, Number(target.value));
     if (!nextCalibration) return;
-
     settings.calibration = nextCalibration;
     refreshBaseSpeed();
   };
-
   const handleVisibilityChange = () => {
-    if (document.hidden) {
-      stopLoop();
-      return;
-    }
+    if (document.hidden) { stopLoop(); return; }
     startLoop();
   };
-
   const redrawCanvasForTheme = (nextColorMode: CanvasColorMode) => {
     if (!canvas) return;
     requestAnimationFrame(() => {
@@ -947,23 +778,15 @@
     handleHeaderPatternOpenChange,
     handleLilacChaserColorChange,
     handleHeaderLilacChaserColorOpenChange,
-    sizeSlider: {
-      value: sizeSliderValue,
-      set: setSizeSliderValue,
-    },
-    speedSlider: {
-      value: speedSliderValue,
-      set: setSpeedSliderValue,
-    },
-    lilacChaserScaleSlider: {
-      value: lilacChaserScaleSliderValue,
-      set: setLilacChaserScaleSliderValue,
-    },
+    sizeSlider: { value: sizeSliderValue, set: setSizeSliderValue },
+    speedSlider: { value: speedSliderValue, set: setSpeedSliderValue },
+    lilacChaserScaleSlider: { value: lilacChaserScaleSliderValue, set: setLilacChaserScaleSliderValue },
     hudControlTransition,
     toggleMotionPaused,
     toggleMotionDirection,
     revealHud,
     openControlsPanel,
+    startDailySession,
   };
 
   const dialogActions: TrainerDialogActions = {
@@ -979,47 +802,21 @@
     handleColorInput,
     handleLetterColorInput,
     handleCalibrationInput,
-    speedSlider: {
-      value: speedSliderValue,
-      set: setSpeedSliderValue,
-    },
-    sizeSlider: {
-      value: sizeSliderValue,
-      set: setSizeSliderValue,
-    },
-    lilacChaserScaleSlider: {
-      value: lilacChaserScaleSliderValue,
-      set: setLilacChaserScaleSliderValue,
-    },
-    opacitySlider: {
-      value: opacitySliderValue,
-      set: setOpacitySliderValue,
-    },
-    targetCountSlider: {
-      value: targetCountSliderValue,
-      set: setTargetCountSliderValue,
-    },
-    distractorCountSlider: {
-      value: distractorCountSliderValue,
-      set: setDistractorCountSliderValue,
-    },
-    distractorBrightnessSlider: {
-      value: distractorBrightnessSliderValue,
-      set: setDistractorBrightnessSliderValue,
-    },
-    letterScaleSlider: {
-      value: letterScaleSliderValue,
-      set: setLetterScaleSliderValue,
-    },
+    speedSlider: { value: speedSliderValue, set: setSpeedSliderValue },
+    sizeSlider: { value: sizeSliderValue, set: setSizeSliderValue },
+    lilacChaserScaleSlider: { value: lilacChaserScaleSliderValue, set: setLilacChaserScaleSliderValue },
+    opacitySlider: { value: opacitySliderValue, set: setOpacitySliderValue },
+    targetCountSlider: { value: targetCountSliderValue, set: setTargetCountSliderValue },
+    distractorCountSlider: { value: distractorCountSliderValue, set: setDistractorCountSliderValue },
+    distractorBrightnessSlider: { value: distractorBrightnessSliderValue, set: setDistractorBrightnessSliderValue },
+    letterScaleSlider: { value: letterScaleSliderValue, set: setLetterScaleSliderValue },
     toggleMotionPaused,
     toggleMotionDirection,
     resetSettings,
     applyRecommendation,
   };
 
-  $effect(() => {
-    redrawCanvasForTheme(colorMode);
-  });
+  $effect(() => { redrawCanvasForTheme(colorMode); });
 </script>
 
 <ModeWatcher track={false} defaultMode="system" />
@@ -1085,6 +882,22 @@
     guideButtonTitle={activeRoute ? "Open guide" : "About FoveaFlow"}
     {patternSelectContentClass}
     actions={hudActions}
+  />
+
+  <!-- 2 分钟训练计时覆盖层 -->
+  <TrainingSessionOverlay
+    {sessionState}
+    onStartModule={(i) => applyModuleSettings(
+      sessionState.status === 'running' || sessionState.status === 'module-done'
+        ? sessionState.session
+        : (sessionState as any).session,
+      i
+    )}
+    onModuleTick={handleModuleTick}
+    onModuleDone={handleModuleDone}
+    onNextModule={handleNextModule}
+    onSessionDone={handleSessionDone}
+    onDismiss={handleSessionDismiss}
   />
 
   <TrainerGuidePopover
