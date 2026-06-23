@@ -9,18 +9,29 @@
   import * as Field from "$lib/components/ui/field/index.js";
 
   type Props = {
-    open: boolean;
+    open?: boolean;
     onApply: (rec: TrainingRecommendation) => void;
-    onOpenChange: (open: boolean) => void;
+    onOpenChange?: (open: boolean) => void;
   };
 
-  let { open, onApply, onOpenChange }: Props = $props();
+  let { open = $bindable(false), onApply, onOpenChange }: Props = $props();
 
   let myopiaInput = $state("");
   let astigmatismInput = $state("0");
   let error = $state("");
   let recommendation = $state<TrainingRecommendation | null>(null);
   let applied = $state(false);
+
+  // 每次弹窗打开时重置表单
+  $effect(() => {
+    if (open) {
+      myopiaInput = "";
+      astigmatismInput = "0";
+      error = "";
+      recommendation = null;
+      applied = false;
+    }
+  });
 
   const levelColors: Record<string, string> = {
     mild: "text-green-600 dark:text-green-400",
@@ -50,9 +61,14 @@
   const handleKeydown = (e: KeyboardEvent) => {
     if (e.key === "Enter") handleCompute();
   };
+
+  const handleOpenChange = (next: boolean) => {
+    open = next;
+    onOpenChange?.(next);
+  };
 </script>
 
-<Dialog.Root {open} {onOpenChange}>
+<Dialog.Root bind:open onOpenChange={handleOpenChange}>
   <Dialog.Content class="max-w-md">
     <Dialog.Header>
       <Dialog.Title>视力匹配训练</Dialog.Title>

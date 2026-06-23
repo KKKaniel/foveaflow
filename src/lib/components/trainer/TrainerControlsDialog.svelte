@@ -70,7 +70,7 @@
         class="size-8"
         aria-label="视力匹配训练"
         title="根据近视/散光度数自动匹配训练参数"
-        onclick={() => (visionDialogOpen = true)}
+        onclick={() => { visionDialogOpen = true; }}
       >
         <EyeIcon class="size-4" />
       </Button>
@@ -105,7 +105,6 @@
         </Tabs.List>
       </div>
 
-      <!-- 训练 Tab -->
       <Tabs.Content value="drill" class="space-y-4 px-4 pb-4 pt-3">
         <TrainerDrillControls
           {settings}
@@ -164,7 +163,6 @@
         {/each}
       </Tabs.Content>
 
-      <!-- 显示 Tab -->
       <Tabs.Content value="display" class="space-y-4 px-4 pb-4 pt-3">
         {#if !isLilacChaserMode}
           <Field.Field>
@@ -206,7 +204,6 @@
         {/if}
       </Tabs.Content>
 
-      <!-- 校准 Tab -->
       <Tabs.Content value="calibration" class="space-y-4 px-4 pb-4 pt-3">
         <TrainerCalibrationControls
           {settings}
@@ -218,7 +215,6 @@
 </div>
 
 <VisionSetupDialog
-  open={visionDialogOpen}
+  bind:open={visionDialogOpen}
   onApply={handleApplyRecommendation}
-  onOpenChange={(o) => (visionDialogOpen = o)}
 />
