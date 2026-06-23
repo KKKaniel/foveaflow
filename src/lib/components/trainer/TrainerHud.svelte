@@ -240,7 +240,6 @@
           <ArrowLeftRightIcon />
         </Button>
 
-        <!-- 视力匹配按钮 + Popover（直嵌顶栏） -->
         <VisionSetupPopover
           onApply={actions.applyRecommendation}
           onStartSession={actions.startDailySession}

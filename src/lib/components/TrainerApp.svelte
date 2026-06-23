@@ -169,7 +169,6 @@
   let desktopPatternSelectOpen = $state(false);
   let desktopLilacChaserColorSelectOpen = $state(false);
 
-  // 训练 session 状态
   let sessionState = $state<TrainingSessionState>({ status: "idle" });
 
   let headerPresetSelectOpen = $derived(
@@ -604,14 +603,15 @@
 
   const handleModuleDone = () => {
     if (sessionState.status !== "running") return;
+    const { session, moduleIndex } = sessionState;
     setMotionPaused(true);
-    sessionState = { status: "module-done", session: sessionState.session, moduleIndex: sessionState.moduleIndex };
+    sessionState = { status: "module-done", session, moduleIndex };
   };
 
   const handleNextModule = () => {
     if (sessionState.status !== "module-done") return;
-    const nextIndex = sessionState.moduleIndex + 1;
-    const session = sessionState.session;
+    const { session, moduleIndex } = sessionState;
+    const nextIndex = moduleIndex + 1;
     if (nextIndex >= session.modules.length) {
       sessionState = { status: "session-done", session };
       return;
@@ -619,12 +619,6 @@
     applyModuleSettings(session, nextIndex);
     sessionState = { status: "running", session, moduleIndex: nextIndex, remainingSec: 120 };
     setMotionPaused(false);
-  };
-
-  const handleSessionDone = () => {
-    if (sessionState.status !== "module-done") return;
-    sessionState = { status: "session-done", session: sessionState.session };
-    setMotionPaused(true);
   };
 
   const handleSessionDismiss = () => {
@@ -786,6 +780,7 @@
     toggleMotionDirection,
     revealHud,
     openControlsPanel,
+    applyRecommendation,
     startDailySession,
   };
 
@@ -884,19 +879,11 @@
     actions={hudActions}
   />
 
-  <!-- 2 分钟训练计时覆盖层 -->
   <TrainingSessionOverlay
     {sessionState}
-    onStartModule={(i) => applyModuleSettings(
-      sessionState.status === 'running' || sessionState.status === 'module-done'
-        ? sessionState.session
-        : (sessionState as any).session,
-      i
-    )}
     onModuleTick={handleModuleTick}
     onModuleDone={handleModuleDone}
     onNextModule={handleNextModule}
-    onSessionDone={handleSessionDone}
     onDismiss={handleSessionDismiss}
   />
 
