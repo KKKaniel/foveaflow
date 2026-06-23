@@ -7,7 +7,7 @@ import type {
   CalibrationField,
   TrainerSliderValue,
 } from "$lib/trainer/settings";
-import type { TrainingRecommendation } from "$lib/vision/prescription";
+import type { TrainingRecommendation, SessionModule } from "$lib/vision/prescription";
 
 type SliderBinding = {
   value: () => number[];
@@ -29,6 +29,8 @@ export type TrainerHudActions = {
   toggleMotionDirection: () => void;
   revealHud: () => void;
   openControlsPanel: () => void;
+  /** 启动一个训练 session，传入当日模块列表 */
+  startSession: (modules: SessionModule[]) => void;
 };
 
 export type TrainerDialogActions = {

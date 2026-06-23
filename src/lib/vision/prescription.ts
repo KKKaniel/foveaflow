@@ -31,6 +31,82 @@ export type TrainingRecommendation = {
   cycleDescription: string;
 };
 
+/** 单个 2 分钟训练模块 */
+export type SessionModule = {
+  /** 模块序号（1-基） */
+  index: number;
+  /** 模块标题 */
+  label: string;
+  /** 目标大小 (px) */
+  baseRadiusPx: number;
+  /** 训练速度 (deg/s) */
+  speedValue: number;
+  speedUnit: "deg/s";
+  /** 模块时长（秒），固定 120 秒 */
+  durationSec: number;
+  /** 训练类型描述 */
+  focusLabel: string;
+};
+
+/** 每日训练计划 */
+export type DailySession = {
+  modules: SessionModule[];
+  totalModules: number;
+  dailyMinutes: number;
+};
+
+const MODULE_DURATION_SEC = 120; // 2 分钟
+
+const MODULE_FOCUS_LABELS = [
+  "平滑追踪",
+  "速度振荡",
+  "大小适应",
+  "高速冲刺",
+  "放松测试",
+  "综合训练",
+];
+
+/**
+ * 根据推荐参数构建每日训练计划。
+ * dailyMinutes 除以 2 得到模块数，每个模块在基准参数上做微小变化以增加多样性。
+ */
+export const buildDailySession = (
+  rec: TrainingRecommendation,
+): DailySession => {
+  const totalModules = Math.max(1, Math.round(rec.dailyMinutes / 2));
+  const modules: SessionModule[] = [];
+
+  for (let i = 0; i < totalModules; i++) {
+    // 每个模块速度微弱变化：从 -10% 到 +10%
+    const speedFactor = 1 + (i / Math.max(1, totalModules - 1) - 0.5) * 0.2;
+    const speedValue =
+      Math.round(rec.speedValue * speedFactor * 10) / 10;
+
+    // 模块大小交替大/小
+    const radiusFactor = i % 2 === 0 ? 1 : 0.85;
+    const baseRadiusPx = Math.round(rec.baseRadiusPx * radiusFactor);
+
+    const focusLabel =
+      MODULE_FOCUS_LABELS[i % MODULE_FOCUS_LABELS.length];
+
+    modules.push({
+      index: i + 1,
+      label: `第 ${i + 1} 组`,
+      baseRadiusPx,
+      speedValue,
+      speedUnit: "deg/s",
+      durationSec: MODULE_DURATION_SEC,
+      focusLabel,
+    });
+  }
+
+  return {
+    modules,
+    totalModules,
+    dailyMinutes: rec.dailyMinutes,
+  };
+};
+
 const computeEquivalentLoad = (myopia: number, astigmatism: number): number => {
   return myopia + astigmatism * 0.5;
 };
@@ -67,7 +143,7 @@ const levelMeta: Record<
     levelLabel: "轻度",
     levelDescription: "近视 / 散光程度较轻，视觉追踪能力通常较好。",
     durationWeeks: 4,
-    dailyMinutes: 5,
+    dailyMinutes: 4,
   },
   moderate: {
     levelLabel: "中度",
