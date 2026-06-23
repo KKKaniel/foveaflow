@@ -31,10 +31,6 @@ export type TrainingRecommendation = {
   cycleDescription: string;
 };
 
-/**
- * 综合近视 + 散光度数，计算“等效精度负担”
- * 散光对清晰度的影响按 0.5 收缩（自主神经学屏幕疲劳研究经验值）
- */
 const computeEquivalentLoad = (myopia: number, astigmatism: number): number => {
   return myopia + astigmatism * 0.5;
 };
@@ -46,9 +42,6 @@ const getLevel = (load: number): PrescriptionLevel => {
   return "very-high";
 };
 
-/**
- * 线性插値：在 [inMin, inMax] 区间内将 value 映射到 [outMin, outMax]
- */
 const lerp = (
   value: number,
   inMin: number,
@@ -97,9 +90,6 @@ const levelMeta: Record<
   },
 };
 
-/**
- * 根据近视和散光度数计算训练建议
- */
 export const computeRecommendation = (
   input: PrescriptionInput,
 ): TrainingRecommendation => {
@@ -108,11 +98,7 @@ export const computeRecommendation = (
   const load = computeEquivalentLoad(myopia, astigmatism);
   const level = getLevel(load);
 
-  // 负荷越高，目标越大、速度越慢
-  // baseRadiusPx: 属于 [14, 44]，负荷在 [0, 900] 区间反向映射
   const baseRadiusPx = Math.round(lerp(load, 0, 900, 44, 14));
-
-  // speedValue (deg/s): 属于 [2, 12]，负荷在 [0, 900] 区间反向映射
   const speedValue = Math.round(lerp(load, 0, 900, 12, 2) * 10) / 10;
 
   const meta = levelMeta[level];
@@ -136,9 +122,6 @@ export const computeRecommendation = (
   };
 };
 
-/**
- * 验证度数输入是否合法
- */
 export const validatePrescriptionInput = (
   myopiaRaw: string,
   astigmatismRaw: string,

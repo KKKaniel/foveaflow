@@ -13,10 +13,7 @@
   import { exercisePresets, type TrainerSettings } from "$lib/engine/presets";
   import type { TrainerDialogActions } from "$lib/trainer/control-actions";
   import type { BehaviorId } from "$lib/trainer/behavior";
-  import {
-    maxSpeedByUnit,
-    speedStepByUnit,
-  } from "$lib/trainer/options";
+  import { maxSpeedByUnit, speedStepByUnit } from "$lib/trainer/options";
   import { trainerSettingBounds } from "$lib/trainer/settings";
   import type { TrainingRecommendation } from "$lib/vision/prescription";
 
@@ -211,13 +208,15 @@
 
       <!-- 校准 Tab -->
       <Tabs.Content value="calibration" class="space-y-4 px-4 pb-4 pt-3">
-        <TrainerCalibrationControls {settings} />
+        <TrainerCalibrationControls
+          {settings}
+          handleCalibrationInput={actions.handleCalibrationInput}
+        />
       </Tabs.Content>
     </Tabs.Root>
   </div>
 </div>
 
-<!-- 视力匹配对话框 -->
 <VisionSetupDialog
   open={visionDialogOpen}
   onApply={handleApplyRecommendation}
