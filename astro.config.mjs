@@ -4,7 +4,8 @@ import { defineConfig } from "astro/config";
 import svelte from "@astrojs/svelte";
 import tailwindcss from "@tailwindcss/vite";
 
-const site = process.env.SITE_URL ?? "https://foveaflow.com";
+const site = process.env.SITE_URL ?? "https://kkkkaniel.github.io";
+const base = process.env.BASE_PATH ?? "/foveaflow";
 
 /** @returns {import("vite").Plugin} */
 function devWatcherListenerLimit() {
@@ -26,6 +27,7 @@ function devWatcherListenerLimit() {
 // https://astro.build/config
 export default defineConfig({
   site,
+  base,
   integrations: [svelte()],
 
   vite: {
