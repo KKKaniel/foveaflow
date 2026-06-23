@@ -74,9 +74,9 @@
     class="h-[calc(100dvh-1rem)] max-h-none max-w-[calc(100dvw-1rem)] overflow-hidden p-0 md:h-auto md:max-h-125 md:max-w-175 lg:max-w-200"
     trapFocus={false}
   >
-    <Dialog.Title class="sr-only">Controls</Dialog.Title>
+    <Dialog.Title class="sr-only">设置</Dialog.Title>
     <Dialog.Description class="sr-only">
-      Change your saved FoveaFlow settings.
+      修改你的视流训练设置。
     </Dialog.Description>
     <Sidebar.Provider
       class="h-full min-h-0 min-w-0 items-start overflow-hidden"
@@ -115,7 +115,7 @@
           class="flex h-16 shrink-0 items-center gap-2 px-4 pr-16 transition-[width,height] ease-linear md:px-4 md:pr-4 group-has-data-[collapsible=icon]/sidebar-wrapper:h-12"
         >
           <div class="flex min-w-0 items-center gap-2 text-base">
-            <span class="shrink-0 text-muted-foreground"> Controls </span>
+            <span class="shrink-0 text-muted-foreground"> 设置 </span>
             <span class="shrink-0 text-muted-foreground" aria-hidden="true">
               ›
             </span>
@@ -146,7 +146,7 @@
             class="t-resize w-full max-w-3xl rounded-3xl border border-border/60 bg-muted/55 p-4 shadow-[0_18px_50px_-42px_rgba(0,0,0,0.85)] md:rounded-xl md:border-0 md:bg-muted/50 md:shadow-none"
           >
             {#if currentControlSection === "session"}
-              <TrainerSettingsSection icon="theme" label="Session" {colorMode}>
+              <TrainerSettingsSection icon="theme" label="训练会话" {colorMode}>
                 <TrainerSessionControls
                   {settings}
                   {motionPaused}
@@ -159,7 +159,7 @@
                 />
               </TrainerSettingsSection>
             {:else if currentControlSection === "drill"}
-              <TrainerSettingsSection icon="target" label="Drill" {colorMode}>
+              <TrainerSettingsSection icon="target" label="训练模式" {colorMode}>
                 <TrainerDrillControls
                   {settings}
                   {isLilacChaserMode}
@@ -177,7 +177,7 @@
                 />
               </TrainerSettingsSection>
             {:else if currentControlSection === "targets"}
-              <TrainerSettingsSection icon="eye" label="Targets" {colorMode}>
+              <TrainerSettingsSection icon="eye" label="目标设置" {colorMode}>
                 <TrainerTargetControls
                   bind:settings
                   {isMotMode}
@@ -205,7 +205,7 @@
                 />
               </TrainerSettingsSection>
             {:else if currentControlSection === "motion"}
-              <TrainerSettingsSection icon="motion" label="Motion" {colorMode}>
+              <TrainerSettingsSection icon="motion" label="运动控制" {colorMode}>
                 <TrainerMotionControls
                   {settings}
                   speedSliderValue={actions.speedSlider.value}
@@ -217,7 +217,7 @@
             {:else if currentControlSection === "screen"}
               <TrainerSettingsSection
                 icon="calibration"
-                label="Screen scale"
+                label="屏幕校准"
                 {colorMode}
               >
                 <TrainerScreenControls
@@ -227,10 +227,9 @@
                 />
               </TrainerSettingsSection>
             {:else}
-              <TrainerSettingsSection icon="reset" label="Defaults" {colorMode}>
+              <TrainerSettingsSection icon="reset" label="恢复默认" {colorMode}>
                 <p class="text-sm leading-6 text-muted-foreground">
-                  Restore the selected drill to its default behavior, visuals,
-                  calibration, and saved local settings.
+                  将当前训练模式恢复为默认行为、视觉效果、校准和本地设置。
                 </p>
                 <Button
                   class="pressable-ui w-full justify-start"
@@ -238,7 +237,7 @@
                   onclick={actions.resetSettings}
                 >
                   <RotateCcwIcon class="size-4" />
-                  <span class="pl-1">Reset to defaults</span>
+                  <span class="pl-1">恢复默认设置</span>
                 </Button>
               </TrainerSettingsSection>
             {/if}
