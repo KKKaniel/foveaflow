@@ -2,10 +2,8 @@
   import EyeIcon from "@lucide/svelte/icons/eye";
   import RefreshCwIcon from "@lucide/svelte/icons/refresh-cw";
   import XIcon from "@lucide/svelte/icons/x";
-  import type { Snippet } from "svelte";
 
   import TrainerCalibrationControls from "$lib/components/trainer/TrainerCalibrationControls.svelte";
-  import TrainerDisplayControls from "$lib/components/trainer/TrainerDisplayControls.svelte";
   import TrainerDrillControls from "$lib/components/trainer/TrainerDrillControls.svelte";
   import VisionSetupDialog from "$lib/components/VisionSetupDialog.svelte";
   import { Button } from "$lib/components/ui/button/index.js";
@@ -29,7 +27,6 @@
     behaviorValue: BehaviorId;
     patternSelectContentClass: string;
     actions: TrainerDialogActions;
-    sliderRow: Snippet<[string, string]>;
   };
 
   let {
@@ -39,7 +36,6 @@
     behaviorValue,
     patternSelectContentClass,
     actions,
-    sliderRow,
   }: Props = $props();
 
   let visionDialogOpen = $state(false);
@@ -49,6 +45,13 @@
     visionDialogOpen = false;
   };
 </script>
+
+{#snippet sliderRow(label: string, value: string)}
+  <div class="flex items-center justify-between">
+    <Field.Label class="text-sm">{label}</Field.Label>
+    <span class="text-xs tabular-nums text-muted-foreground">{value}</span>
+  </div>
+{/snippet}
 
 <div
   id="trainer-controls-panel"
@@ -64,7 +67,6 @@
   <div class="flex items-center justify-between border-b px-4 py-3">
     <h2 class="text-sm font-semibold">设置</h2>
     <div class="flex items-center gap-1">
-      <!-- 视力匹配按钮 -->
       <Button
         variant="ghost"
         size="icon"
@@ -75,7 +77,6 @@
       >
         <EyeIcon class="size-4" />
       </Button>
-      <!-- 重置按钮 -->
       <Button
         variant="ghost"
         size="icon"
@@ -85,7 +86,6 @@
       >
         <RefreshCwIcon class="size-4" />
       </Button>
-      <!-- 关闭按钮 -->
       <Button
         popovertarget="trainer-controls-panel"
         variant="ghost"
@@ -169,14 +169,44 @@
 
       <!-- 显示 Tab -->
       <Tabs.Content value="display" class="space-y-4 px-4 pb-4 pt-3">
-        <TrainerDisplayControls
-          {settings}
-          {isLilacChaserMode}
-          distractorBrightnessSlider={actions.distractorBrightnessSlider}
-          targetOpacitySlider={actions.opacitySlider}
-          letterScaleSlider={actions.letterScaleSlider}
-          {sliderRow}
-        />
+        {#if !isLilacChaserMode}
+          <Field.Field>
+            {@render sliderRow("不透明度", `${Math.round(settings.targetOpacity * 100)}%`)}
+            <Slider
+              bind:value={actions.opacitySlider.value, actions.opacitySlider.set}
+              min={trainerSettingBounds.targetOpacity.min}
+              max={trainerSettingBounds.targetOpacity.max}
+              step={0.01}
+              aria-label="目标不透明度"
+            />
+          </Field.Field>
+
+          {#if settings.presetId === "mot"}
+            <Field.Field>
+              {@render sliderRow("干扰物亮度", `${Math.round(settings.distractorBrightness * 100)}%`)}
+              <Slider
+                bind:value={actions.distractorBrightnessSlider.value, actions.distractorBrightnessSlider.set}
+                min={trainerSettingBounds.distractorBrightness.min}
+                max={trainerSettingBounds.distractorBrightness.max}
+                step={0.01}
+                aria-label="干扰物亮度"
+              />
+            </Field.Field>
+          {/if}
+
+          {#if settings.targetShape === "letter"}
+            <Field.Field>
+              {@render sliderRow("字母缩放", `${settings.letterScale.toFixed(2)}x`)}
+              <Slider
+                bind:value={actions.letterScaleSlider.value, actions.letterScaleSlider.set}
+                min={trainerSettingBounds.letterScale.min}
+                max={trainerSettingBounds.letterScale.max}
+                step={0.05}
+                aria-label="字母缩放"
+              />
+            </Field.Field>
+          {/if}
+        {/if}
       </Tabs.Content>
 
       <!-- 校准 Tab -->
